@@ -36,7 +36,7 @@ const ManageLessonPage = ({ lessonData }) => {
   const premiumCount = lessons.filter((l) => l.accessLevel === "Premium");
   const flaggedCount = lessons.filter((l) => l.flags > 0);
 
-  // --- ১. লেসন ডিলিট করার রিয়েল-টাইম অপারেশন (Database + UI) ---
+  
   const handleDelete = (lessonId, title) => {
     Swal.fire({
       title: "Are you sure?",
@@ -81,7 +81,7 @@ const ManageLessonPage = ({ lessonData }) => {
     });
   };
 
-  // --- ২. ফিচারড স্ট্যাটাস আপডেট অপারেশন (Database + UI) ---
+ 
   const handleToggleFeature = async (lessonId, currentStatus) => {
     const nextStatus = !currentStatus;
     try {
@@ -119,7 +119,7 @@ const ManageLessonPage = ({ lessonData }) => {
     }
   };
 
-  // --- ৩. রিভিউ/অ্যাপ্রুভাল স্ট্যাটাস আপডেট অপারেশন (Database + UI) ---
+  
   const handleMarkReviewed = async (lessonId) => {
     try {
       // ডাটাবেজে আপডেট কল (isReviewed: true পাঠানো হচ্ছে)
@@ -154,7 +154,7 @@ const ManageLessonPage = ({ lessonData }) => {
     }
   };
 
-  // --- Filtering Logic ---
+  
   const filteredLessons = lessons.filter((lesson) => {
     const matchCategory =
       categoryFilter === "all" || lesson.category === categoryFilter;

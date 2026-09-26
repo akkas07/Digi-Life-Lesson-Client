@@ -5,6 +5,7 @@ import MetricSpotlight from "@/components/home/MetricSpotlight";
 import TestimonialsMarquee from "@/components/home/TestimonialsMarquee";
 import UniqueNewsletter from "@/components/home/UniqueNewsletter";
 import WhyItMatters from "@/components/home/WhyItMatters";
+import FeaturedLessons from "@/components/lessons/FeaturedLessons";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
      <HeroSection />
      <ImpactStats />
      <WhyItMatters />
+     <FeaturedLessons />
      <TestimonialsMarquee />
      <DynamicFAQ />
      <UniqueNewsletter />
