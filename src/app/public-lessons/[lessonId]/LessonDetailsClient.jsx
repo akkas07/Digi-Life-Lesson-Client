@@ -206,8 +206,7 @@ useEffect(() => {
           src={image || "/image/register.png"}
           alt={title}
           className="w-full h-full object-cover object-center transition-transform duration-300 ease-in-out hover:scale-105"
-          fill
-        />
+          fill/>
         <div className="absolute inset-0 bg-linear-to-t from-[#0B0C0E] via-transparent to-transparent flex flex-col justify-end p-6 md:p-8">
           <div className="flex items-center gap-3 text-xs md:text-sm text-zinc-400 mt-2 bg-black/40 w-fit p-2 rounded-xl backdrop-blur-sm border border-zinc-800/30">
             <div className="w-6 h-6 rounded-full bg-zinc-800 overflow-hidden shrink-0 flex items-center justify-center text-[10px] font-bold text-zinc-300">
