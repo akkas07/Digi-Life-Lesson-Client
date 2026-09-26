@@ -30,6 +30,11 @@ export const auth = betterAuth({
         required: false,
         defaultValue: "free",
       },
+      isPremium: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+      },
     },
   },
   socialProviders: {

@@ -20,7 +20,7 @@ export default function NavbarComponent({ sessionStatus }) {
 
   // Auth & Premium states
   const isLoggedIn = !!user;
-  const isPremium = user?.isPremium || false;
+  const isPremium = user?.plan === "premium" || user?.isPremium || false;
 
   const isActive = (path) => pathname === path;
 
@@ -132,9 +132,15 @@ export default function NavbarComponent({ sessionStatus }) {
                 size="sm"
                 className="font-bold animate-pulse text-warning"
               >
-               ⭐ Upgrade 
+                ⭐ Upgrade
               </Button>
             </Link>
+          )}
+
+          {isLoggedIn && isPremium && (
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+              ⭐ Premium
+            </span>
           )}
           <ThemeSwitcher />
 

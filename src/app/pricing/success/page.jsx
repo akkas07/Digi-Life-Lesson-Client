@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
+import { auth } from "@/lib/auth";
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -20,6 +22,15 @@ export default async function Success({ searchParams }) {
   }
 
   if (status === "complete") {
+    try {
+      await auth.api.updateUser({
+        headers: await headers(),
+        body: { plan: "premium", isPremium: true },
+      });
+    } catch (error) {
+      console.error("Failed to activate premium access", error);
+    }
+
     return (
       <main className="min-h-screen bg-[#0B0F19] text-white flex items-center justify-center p-6 antialiased relative overflow-hidden">
         {/* Glowing Violet Decorative Background Effects to match your landing page */}
@@ -118,11 +129,17 @@ export default async function Success({ searchParams }) {
             Explore more lesson
           </Link>
 
-          {/* Subtle Secondary Back Link */}
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center gap-2 text-gray-400 hover:text-white font-medium text-sm transition-colors duration-200"
-          >
+          <div className="flex w-full flex-col gap-3 sm:flex-row">
+            <Link
+              href="/public-lessons"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-purple-500/30 bg-purple-500/10 px-4 py-2.5 text-sm font-semibold text-purple-200 transition hover:bg-purple-500/20"
+            >
+              Explore Premium Lessons
+            </Link>
+            <Link
+              href="/"
+              className="inline-flex flex-1 items-center justify-center gap-2 text-gray-400 hover:text-white font-medium text-sm transition-colors duration-200"
+            >
             <svg
               className="w-4 h-4"
               fill="none"
@@ -137,8 +154,9 @@ export default async function Success({ searchParams }) {
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
               ></path>
             </svg>
-            Return to Home
-          </Link>
+              Return to Home
+            </Link>
+          </div>
         </div>
       </main>
     );

@@ -17,10 +17,10 @@ const PublicLesson = async () => {
         {/* Page Header */}
         <div className="mb-12 border-b border-zinc-900 pb-6">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-zinc-100">
-            Vault Stream
+           Digital Life Lessons
           </h1>
           <p className="mt-2 text-sm text-zinc-400 font-medium">
-            Discover unfiltered life experiences, mindset shifts, and compiled human wisdom.
+           Preserve and learn from your life&apos;s greatest moments.
           </p>
         </div>
 

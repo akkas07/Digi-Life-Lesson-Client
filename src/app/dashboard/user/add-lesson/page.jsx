@@ -23,10 +23,8 @@ export default function AddLessonPage() {
   // Current Step Tracker
   const [currentStep, setCurrentStep] = useState(1);
 
-  const {data: session } = useSession();
+  const { data: session } = useSession();
   const user = session?.user || null;
-
-  
 
   const router = useRouter();
 
@@ -41,6 +39,7 @@ export default function AddLessonPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState(""); // <-- নতুন ইমেজ এরর স্টেট যুক্ত করা হলো
 
   // UI Options
   const categories = [
@@ -56,20 +55,17 @@ export default function AddLessonPage() {
     {
       name: "Motivational",
       emoji: "🔥",
-      color:
-        "from-orange-500/10 to-amber-500/10 border-amber-500/30 text-amber-400",
+      color: "from-orange-500/10 to-amber-500/10 border-amber-500/30 text-amber-400",
     },
     {
       name: "Sad & Heavy",
       emoji: "🔮",
-      color:
-        "from-purple-500/10 to-indigo-500/10 border-purple-500/30 text-purple-400",
+      color: "from-purple-500/10 to-indigo-500/10 border-purple-500/30 text-purple-400",
     },
     {
       name: "Gratitude",
       emoji: "☕",
-      color:
-        "from-emerald-500/10 to-teal-500/10 border-emerald-500/30 text-emerald-400",
+      color: "from-emerald-500/10 to-teal-500/10 border-emerald-500/30 text-emerald-400",
     },
     {
       name: "Realization",
@@ -79,13 +75,12 @@ export default function AddLessonPage() {
     {
       name: "Ambition",
       emoji: "🚀",
-      color:
-        "from-fuchsia-500/10 to-pink-500/10 border-fuchsia-500/30 text-fuchsia-400",
+      color: "from-fuchsia-500/10 to-pink-500/10 border-fuchsia-500/30 text-fuchsia-400",
     },
     {
       name: "Philosophical",
       emoji: "🌌",
-      color: "from-sky-500/10 to-indigo-500/10 border-sky-500/30 text-sky-400",
+      color: "from-sky-500/10 to-indigo-500/10 border-sky-400/30 text-sky-400",
     },
     {
       name: "Vulnerable",
@@ -95,8 +90,7 @@ export default function AddLessonPage() {
     {
       name: "Calm & Mindful",
       emoji: "🧘",
-      color:
-        "from-lime-500/10 to-green-500/10 border-green-500/30 text-green-400",
+      color: "from-lime-500/10 to-green-500/10 border-green-500/30 text-green-400",
     },
   ];
 
@@ -104,8 +98,13 @@ export default function AddLessonPage() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        setImageError("⚠️ Please select a valid image file (PNG, JPG).");
+        return;
+      }
       setSelectedFile(file);
       setImagePreview(URL.createObjectURL(file));
+      setImageError(""); // ফাইল সঠিকভাবে সিলেক্ট হলে এরর চলে যাবে
     }
   };
 
@@ -143,12 +142,16 @@ export default function AddLessonPage() {
     if (file && file.type.startsWith("image/")) {
       setSelectedFile(file);
       setImagePreview(URL.createObjectURL(file));
+      setImageError(""); // ড্রপ সাকসেস হলে এরর ক্লিয়ার হবে
+    } else {
+      setImageError("⚠️ Dropped file is not a valid image.");
     }
   };
 
   const removeImage = () => {
     setSelectedFile(null);
     setImagePreview(null);
+    setImageError("");
   };
 
   // Step Validation & Navigation
@@ -162,16 +165,22 @@ export default function AddLessonPage() {
 
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
-  const mockLessonId = "lesson_123"; // Mock lesson ID for demonstration
+  const mockLessonId = "lesson_123";
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
-    setIsUploading(true);
 
+    // কাস্টম ইমেজ রিকোয়ার্ড ভ্যালিডেশন চেক
+    if (!selectedFile) {
+      setImageError("⚠️ Image attachment is required to commit this lesson!");
+      toast.error("Please upload a contextual image.");
+      return; // সাবমিশন ব্লক করা হলো
+    }
+
+    setIsUploading(true);
     let uploadedImageUrl = "";
 
     try {
-      // Execute upload if a file is attached
       if (selectedFile) {
         uploadedImageUrl = await uploadToImgBB(selectedFile);
       }
@@ -197,7 +206,6 @@ export default function AddLessonPage() {
 
       if (res?.insertedId || res?.success) {
         toast.success("Lesson successfully added to your vault!");
-        // Reset states cleanly
         setHeadline("");
         setLesson("");
         setSelectedCategory("Personal Growth");
@@ -205,6 +213,7 @@ export default function AddLessonPage() {
         setVisibility("Public");
         setSelectedFile(null);
         setImagePreview(null);
+        setImageError("");
         setCurrentStep(1);
         router.push("/dashboard/user/my-lessons");
       } else {
@@ -299,7 +308,7 @@ export default function AddLessonPage() {
           </div>
         </div>
 
-        {/* RIGHT PANEL: Converted to div to stop native HTML form fires */}
+        {/* RIGHT PANEL */}
         <div className="md:col-span-8 p-6 md:p-10 flex flex-col justify-between bg-zinc-950/20">
           <div className="min-h-[46vh] flex flex-col justify-center">
             {/* STEP 1: Inputs */}
@@ -397,16 +406,20 @@ export default function AddLessonPage() {
                     <div
                       onDragOver={handleDragOver}
                       onDrop={handleDrop}
-                      className="border border-dashed border-zinc-800 hover:border-purple-500/40 rounded-xl p-8 text-center bg-zinc-900/20 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 group relative overflow-hidden"
+                      className={`border border-dashed rounded-xl p-8 text-center bg-zinc-900/20 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 group relative overflow-hidden ${
+                        imageError 
+                          ? "border-red-500/50 bg-red-500/2" 
+                          : "border-zinc-800 hover:border-purple-500/40"
+                      }`}
                     >
+                      
                       <input
                         type="file"
                         accept="image/*"
-                        isRequired={true}
                         onChange={handleImageChange}
                         className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                       />
-                      <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 group-hover:text-purple-400 group-hover:border-purple-500/20 transition-all">
+                      <div className={`p-3 rounded-xl bg-zinc-900 border text-zinc-400 group-hover:text-purple-400 group-hover:border-purple-500/20 transition-all ${imageError ? "border-red-500/30 text-red-400" : "border-zinc-800"}`}>
                         <UploadCloud className="h-5 w-5" />
                       </div>
                       <div className="space-y-1">
@@ -435,6 +448,13 @@ export default function AddLessonPage() {
                         </button>
                       </div>
                     </div>
+                  )}
+
+                  {/* লাইভ ডাইনামিক এরর মেসেজ কম্পোনেন্ট */}
+                  {imageError && (
+                    <p className="text-[11px] font-semibold text-red-400 animate-pulse pl-1 pt-1 flex items-center gap-1">
+                      {imageError}
+                    </p>
                   )}
                 </div>
 
@@ -503,7 +523,7 @@ export default function AddLessonPage() {
             ) : (
               <button
                 type="button"
-                onClick={handleSubmit} // <--- সরাসরি onClick হ্যান্ডলার দিয়ে সাবমিট নিশ্চিত করা হয়েছে
+                onClick={handleSubmit}
                 disabled={isUploading}
                 className="bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-bold py-2.5 px-6 rounded-xl flex items-center gap-1.5 transition-all shadow-lg shadow-purple-500/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >

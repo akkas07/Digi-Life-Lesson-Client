@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 import PaginatedLessons from "./PaginatedLessons";
 
 const LessonsFilterWrapper = ({ initialLessons }) => {
@@ -10,6 +11,8 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
   const [selectedTone, setSelectedTone] = useState("All");
   const [sortBy, setSortBy] = useState("Newest");
   const [filteredLessons, setFilteredLessons] = useState(initialLessons);
+  const { data: session } = useSession();
+  const isPremiumUser = session?.user?.plan === "premium" || session?.user?.isPremium || false;
 
   // স্ক্রিনশট থেকে নেওয়া ক্যাটেগরি ও ইমোশনাল টোন লিস্ট
   const categories = ["All", "Personal Growth", "Career", "Relationships", "Mindset", "Mistakes Learned", "Philosophy"];
@@ -57,18 +60,20 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
 
   return (
     <div className="space-y-8">
-      {/* SEARCH AND FILTER BAR (হুবহু স্ক্রিনশট ১ এর ডার্ক লাক্সারি রূপ) */}
+      {/* SEARCH AND FILTER BAR */}
       <div className="flex flex-col md:flex-row gap-3 items-center bg-[#0d101d] p-3 rounded-2xl border border-zinc-900 shadow-xl">
         
         {/* Search Input */}
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-4 top-1.5/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          <div className="pointer-events-none absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-purple-500/10 text-purple-300">
+            <Search className="h-4 w-4" />
+          </div>
           <input
             type="text"
             placeholder="Search for wisdom..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#131729] text-sm text-zinc-200 pl-11 pr-4 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600/70 transition placeholder:text-zinc-600"
+            className="w-full bg-[#131729] text-sm text-zinc-200 pl-14 pr-4 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600/70 transition placeholder:text-zinc-600"
           />
         </div>
 
@@ -120,7 +125,7 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
 
       {/* PAGINATED CARDS COMPONENT */}
       {filteredLessons.length > 0 ? (
-        <PaginatedLessons lessons={filteredLessons} />
+        <PaginatedLessons lessons={filteredLessons} isPremiumUser={isPremiumUser} />
       ) : (
         <div className="text-center py-20 border border-dashed border-zinc-900 rounded-[24px] bg-[#090c15]">
           <p className="text-zinc-500 text-sm">No match found for {searchQuery}. Try something else!</p>

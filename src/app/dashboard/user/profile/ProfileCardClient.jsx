@@ -3,7 +3,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button, Input, Chip } from "@heroui/react";
+import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
+import { getFavoriteLessons } from "@/lib/api/favorite";
+import { getLessonByUserId } from "@/lib/api/lessons";
 import { X, Check, Camera, Star, BookOpen, Bookmark, Edit2, ExternalLink } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -49,11 +52,16 @@ const ProfileCardClient = () => {
   const [profileImage, setProfileImage] = useState("");
   const [tempName, setTempName] = useState("");
   const [tempImage, setTempImage] = useState("");
+  const [savedLessonCount, setSavedLessonCount] = useState(0);
+  const [createdLessonCount, setCreatedLessonCount] = useState(0);
 
-  // Mocking user stats and premium status since it might not be in session yet
-  const isPremium = session?.user?.isPremium || true; 
-  const lessonsCreated = session?.user?.lessonsCreated || 12;
-  const lessonsSaved = session?.user?.lessonsSaved || 45;
+  const isPremium = session?.user?.plan === "premium" || session?.user?.isPremium || false;
+  const membershipLabel = isPremium ? "Premium Member" : "Free Member";
+  const membershipAccentClass = isPremium
+    ? "from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30"
+    : "from-zinc-700/30 to-zinc-800/20 text-zinc-300 border-zinc-700/60";
+  const lessonsCreated = createdLessonCount || session?.user?.lessonsCreated || 0;
+  const lessonsSaved = savedLessonCount || session?.user?.lessonsSaved || 0;
 
   useEffect(() => {
     const savedName = localStorage.getItem("profile_name");
@@ -67,6 +75,26 @@ const ProfileCardClient = () => {
       setProfileImage(session.user.image || "");
     }
   }, [session]);
+
+  useEffect(() => {
+    const loadCounts = async () => {
+      if (!session?.user?.id) return;
+
+      try {
+        const [favoritesResult, lessonsResult] = await Promise.all([
+          getFavoriteLessons(session.user.id),
+          getLessonByUserId(session.user.id),
+        ]);
+
+        setSavedLessonCount(favoritesResult?.data?.length || 0);
+        setCreatedLessonCount(Array.isArray(lessonsResult) ? lessonsResult.length : 0);
+      } catch (error) {
+        console.error("Failed to load profile stats", error);
+      }
+    };
+
+    loadCounts();
+  }, [session?.user?.id]);
 
   if (isPending) {
     return (
@@ -140,10 +168,10 @@ const ProfileCardClient = () => {
                   )}
                 </div>
               </div>
-              {isPremium && !isEditing && (
-                <div className="absolute bottom-2 right-2 bg-linear-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg shadow-amber-500/30 border-2 border-[#15161a] z-20">
-                  <Star width={12} height={12} fill="currentColor" />
-                  Premium
+              {!isEditing && (
+                <div className={`absolute bottom-2 right-2 bg-linear-to-r ${isPremium ? "from-amber-400 to-orange-500 text-white" : "from-zinc-700 to-zinc-600 text-zinc-100"} text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg border-2 border-[#15161a] z-20 ${isPremium ? "shadow-amber-500/30" : "shadow-zinc-700/20"}`}>
+                  {isPremium ? <Star width={12} height={12} fill="currentColor" /> : <BookOpen width={12} height={12} />}
+                  {isPremium ? "Premium" : "Free"}
                 </div>
               )}
             </div>
@@ -192,20 +220,33 @@ const ProfileCardClient = () => {
                     <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
                       {profileName || "Anonymous User"}
                     </h2>
-                    {isPremium && (
-                      <Chip 
-                        size="sm" 
-                        variant="shadow" 
-                        className="bg-linear-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border border-amber-500/30 font-medium md:ml-2 mx-auto md:mx-0"                        
-                      >
-                        Premium Member
-                      </Chip>
-                    )}
+                    <Chip 
+                      size="sm" 
+                      variant="shadow" 
+                      className={`bg-linear-to-r ${membershipAccentClass} border font-medium md:ml-2 mx-auto md:mx-0`}
+                    >
+                      {membershipLabel}
+                    </Chip>
                   </div>
                   
-                  <p className="text-zinc-400 font-medium flex items-center justify-center md:justify-start gap-2 mb-6">
+                  <p className="text-zinc-400 font-medium flex items-center justify-center md:justify-start gap-2 mb-4">
                     {session?.user?.email || "user@example.com"}
                   </p>
+
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-6">
+                    <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${isPremium ? "border-amber-500/30 bg-amber-500/10 text-amber-300" : "border-zinc-700/60 bg-zinc-800/60 text-zinc-300"}`}>
+                      <Star width={12} height={12} className={isPremium ? "fill-current" : "opacity-70"} />
+                      {isPremium ? "Premium access active" : "Free access active"}
+                    </div>
+                    {!isPremium && (
+                      <Link
+                        href="/pricing"
+                        className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 text-xs font-semibold text-purple-300 transition hover:bg-purple-500/20"
+                      >
+                        Upgrade to Premium
+                      </Link>
+                    )}
+                  </div>
 
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-8 mt-2">
                     <div className="flex items-center gap-3 bg-zinc-900/60 px-5 py-3 rounded-2xl border border-zinc-800/50">
@@ -290,9 +331,13 @@ const ProfileCardClient = () => {
                     <Chip size="sm" className="bg-zinc-800 text-zinc-300 font-medium text-[10px] uppercase tracking-wider">
                       {lesson.category}
                     </Chip>
-                    {lesson.accessLevel === "Premium" && (
-                      <Chip size="sm" variant="flat" className="bg-amber-500/10 text-amber-500 border border-amber-500/20" >
-                        Premium
+                    {lesson.accessLevel === "Premium" ? (
+                      <Chip size="sm" variant="flat" className={`border ${isPremium ? "bg-amber-500/10 text-amber-500 border-amber-500/20" : "bg-zinc-800/80 text-zinc-400 border-zinc-700/60"}`}>
+                        {isPremium ? "Premium" : "Locked"}
+                      </Chip>
+                    ) : (
+                      <Chip size="sm" variant="flat" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        Free
                       </Chip>
                     )}
                   </div>

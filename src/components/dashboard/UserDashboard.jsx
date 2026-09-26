@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   BookOpen,
@@ -14,6 +14,7 @@ import {
   Quote,
 } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+import { getFavoriteLessons } from "@/lib/api/favorite";
 import { getLessonByUserId } from "@/lib/api/lessons";
 
 export default function UserDashboard(
@@ -21,20 +22,33 @@ export default function UserDashboard(
   {lessons = [], likeCount = [0], userStats = null, recentLessons = [] },
 ) {
   const [timeFrame, setTimeFrame] = useState("This Week");
-
+  const [savedCount, setSavedCount] = useState(userStats?.saved ?? 0);
   const { data: session, isPending } = useSession();
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
   const user = session?.user;
+
+  useEffect(() => {
+    const loadSavedCount = async () => {
+      if (!user?.id) return;
+      try {
+        const result = await getFavoriteLessons(user.id);
+        setSavedCount(result?.data?.length || 0);
+      } catch (error) {
+        console.error("Failed to load saved lessons count", error);
+      }
+    };
+
+    loadSavedCount();
+  }, [user?.id]);
 
   const stats = userStats || {
     created: 0,
-    saved: 0,
+    saved: savedCount,
     impact: 0,
   };
+
+  if (isPending) {
+    return <div className="flex min-h-screen items-center justify-center text-sm text-slate-500">Loading your dashboard...</div>;
+  }
 
   const lessonCount = Array.isArray(lessons) ? lessons.length : 0;
 
@@ -101,7 +115,7 @@ export default function UserDashboard(
             </div>
             <div className="mt-4 space-y-1">
               <h2 className="text-4xl font-extrabold tracking-tight">
-                {stats.saved}
+                {savedCount}
               </h2>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
                 Wisdom Saved

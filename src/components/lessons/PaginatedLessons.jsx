@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ITEMS_PER_PAGE = 10;
 
-const PaginatedLessons = ({ lessons = [] }) => {
+const PaginatedLessons = ({ lessons = [], isPremiumUser = false }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(lessons.length / ITEMS_PER_PAGE);
@@ -70,7 +70,7 @@ const PaginatedLessons = ({ lessons = [] }) => {
       {/* Cards grid */}
       <div className="flex flex-wrap">
         {currentLessons.map((lesson, index) => (
-          <LessonCard key={lesson._id ?? index} lesson={lesson} />
+          <LessonCard key={lesson._id ?? index} lesson={lesson} isPremiumUser={isPremiumUser} />
         ))}
       </div>
 

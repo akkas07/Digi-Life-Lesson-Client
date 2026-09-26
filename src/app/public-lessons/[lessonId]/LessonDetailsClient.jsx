@@ -2,10 +2,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "@heroui/react";
-import { X, Heart, Clock, BookOpen, Star } from "lucide-react";
+import { X, Heart, Clock, BookOpen, Star, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -24,6 +25,7 @@ const LessonDetailsClient = ({ lesson }) => {
   const { data: session } = useSession();
   const currentUser = session?.user || null;
   const isLoggedIn = !!currentUser;
+  const isPremiumUser = currentUser?.plan === "premium" || currentUser?.isPremium || false;
 
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
@@ -198,8 +200,23 @@ useEffect(() => {
     }
   };
 
+  const isPremiumLocked = accessLevel === "Premium" && !isPremiumUser;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 bg-[#0B0C0E] min-h-screen text-zinc-300 antialiased space-y-8">
+      <div className="flex items-center justify-between">
+        <Link
+          href="/public-lessons"
+          className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:border-purple-500/40 hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to lessons
+        </Link>
+        <div className="rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-purple-300">
+          {accessLevel || "Public"}
+        </div>
+      </div>
+
       {/* Hero Banner */}
       <div className="relative aspect-video w-full h-75 md:h-112.5 rounded-[24px] overflow-hidden bg-zinc-900 border border-zinc-900 shadow-2xl">
         <Image
@@ -242,7 +259,36 @@ useEffect(() => {
         </div>
       </div>
 
+      {isPremiumLocked && (
+        <div className="bg-[#16171B] border border-purple-900/40 rounded-[24px] p-6 shadow-xl">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="inline-flex items-center rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-purple-300">
+                Premium Content
+              </div>
+              <h3 className="mt-3 text-xl font-semibold text-white">
+                Unlock this lesson with a premium membership.
+              </h3>
+              <p className="mt-2 text-sm text-zinc-400">
+                This wisdom block is reserved for premium readers. Upgrade once and you&apos;ll be able to view the full story, reflections, and takeaways.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Link href="/pricing" className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-purple-700">
+                Upgrade to Premium
+              </Link>
+              {!isLoggedIn && (
+                <Link href="/auth/signin" className="inline-flex items-center justify-center rounded-xl border border-zinc-700 px-4 py-2.5 text-sm font-semibold text-zinc-300 transition hover:border-zinc-500 hover:text-white">
+                  Sign in
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Core Lesson Content */}
+      {!isPremiumLocked && (
       <div className="bg-[#111214] border border-zinc-900 rounded-[24px] p-6 md:p-8 shadow-xl space-y-6">
         <div className="flex items-center gap-2.5 border-b border-zinc-900 pb-4">
           <div className="p-2 bg-purple-950/40 border border-purple-900/50 rounded-xl">
@@ -315,6 +361,7 @@ useEffect(() => {
           </button>
         </div>
       </div>
+      )}
 
       {/* Comments Section */}
       <div className="bg-[#111214] border border-zinc-900 rounded-[24px] p-6 shadow-xl space-y-6">
