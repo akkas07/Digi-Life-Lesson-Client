@@ -9,8 +9,7 @@ export function Providers({ children }) {
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
-    >
+      disableTransitionOnChange>
       {children}
     </NextThemesProvider>
   );
