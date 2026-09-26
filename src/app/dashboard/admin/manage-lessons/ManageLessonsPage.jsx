@@ -24,9 +24,8 @@ import {
 
 
 const ManageLessonPage = ({ lessonData }) => {
-  const lessons = lessonData?.allLessons;
+  const [lessons, setLessons] = useState(lessonData?.allLessons || []);
 
-  
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [visibilityFilter, setVisibilityFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -233,7 +232,7 @@ const ManageLessonPage = ({ lessonData }) => {
               Pending Reports
             </p>
             <h3 className="text-2xl font-black font-mono text-rose-400 mt-1">
-              {flaggedCount}
+              {flaggedCount.length}
             </h3>
             <p className="text-[10px] text-rose-400/80 font-medium mt-1">⚠️ Action Required</p>
           </div>

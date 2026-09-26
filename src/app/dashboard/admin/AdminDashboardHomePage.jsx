@@ -38,20 +38,13 @@ const lessonOutputData = [
   { name: "Dec", lessons: 10 },
 ];
 
-const topContributors = [
-  { id: 1, name: "Ashikur Rahman", lessons: 4, avatar: "📄" }, // ইমেজ না থাকলে ইমোজি/ইনিশিয়াল ব্যাকআপ
-  {
-    id: 2,
-    name: "Ahashan Habib Utsho",
-    lessons: 1,
-    avatar:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
-  },
-];
-
-const AdminDashboardHome = ({ users, lessons, last24HoursCount, userReportsCount }) => {
- 
-
+const AdminDashboardHome = ({
+  users,
+  lessons,
+  last24HoursCount,
+  userReportsCount,
+  contributors = [],
+}) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -284,40 +277,42 @@ const AdminDashboardHome = ({ users, lessons, last24HoursCount, userReportsCount
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {topContributors.map((contributor, index) => (
+          {contributors.map((contributor, index) => (
             <div
-              key={contributor.id}
-              className="p-4 bg-[#090b14]/60 border border-zinc-900 rounded-xl flex items-center justify-between group hover:border-purple-950 transition-colors"
+              key={contributor._id || index}
+              className="flex items-center gap-3 p-3 bg-[#0a1120] border border-zinc-900/50 rounded-xl group hover:border-purple-500/20 transition-all duration-200"
             >
-              <div className="flex items-center gap-3">
-                {/* Avatar Shield Container */}
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-zinc-300">
-                    {contributor.avatar.startsWith("http") ? (
+              <div className="relative">
+                <div className="avatar placeholder">
+                  <div className="bg-linear-to-br from-cyan-500/10 to-purple-600/20 text-cyan-400 border border-purple-500/20 rounded-xl w-10 h-10 flex items-center justify-center font-bold text-sm overflow-hidden">
+                    {contributor.userImage ? (
                       <img
-                        src={contributor.avatar}
-                        alt={contributor.name}
+                        src={contributor.userImage}
+                        alt={contributor.userName}
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-base">{contributor.avatar}</span>
+                      <span className="text-sm uppercase">
+                        {contributor.userName?.charAt(0) || "U"}
+                      </span>
                     )}
                   </div>
-                  {/* Rank Badge */}
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-purple-950 border border-purple-500/40 text-[9px] font-black text-purple-300 flex items-center justify-center font-mono">
-                    {index + 1}
-                  </span>
                 </div>
 
-                <div>
-                  <h5 className="text-xs font-bold text-zinc-200 group-hover:text-purple-400 transition-colors">
-                    {contributor.name}
-                  </h5>
-                  <p className="text-[10px] text-zinc-500 font-medium font-mono mt-0.5">
-                    {contributor.lessons}{" "}
-                    {contributor.lessons > 1 ? "Lessons" : "Lesson"}
-                  </p>
-                </div>
+                {/* Rank Badge */}
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-purple-950 border border-purple-500/40 text-[9px] font-black text-purple-300 flex items-center justify-center font-mono">
+                  {index + 1}
+                </span>
+              </div>
+
+              <div>
+                <h5 className="text-xs font-bold text-zinc-200 group-hover:text-purple-400 transition-colors">
+                  {contributor.userName || "Anonymous User"}
+                </h5>
+                <p className="text-[10px] text-zinc-500 font-medium font-mono mt-0.5">
+                  {contributor.lessonCount || 0}{" "}
+                  {(contributor.lessonCount || 0) > 1 ? "Lessons" : "Lesson"}
+                </p>
               </div>
             </div>
           ))}

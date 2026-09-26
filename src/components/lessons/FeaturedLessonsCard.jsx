@@ -1,10 +1,17 @@
+"use client";
+import { useSession } from "@/lib/auth-client";
 /* eslint-disable @next/next/no-img-element */
 import { Calendar, Eye, ImageIcon, Lock } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const FeaturedLessonsCard = ({ lesson }) => {
-  const isLocked = lesson.accessLevel === "Premium" && !lesson.isPremiumUser;
+
+const FeaturedLessonsCard = ({ lesson, isPremiumUser: propIsPremiumUser }) => {
+  const { data: session } = useSession();
+  const derivedIsPremium = session?.user?.plan === "premium" || session?.user?.isPremium || false;
+  const isPremiumUser = typeof propIsPremiumUser === "boolean" ? propIsPremiumUser : derivedIsPremium;
+  const accessLevel = lesson?.accessLevel;
+  const isLocked = accessLevel === "Premium" && !isPremiumUser;
 
   return (
     // কার্ডের রুট ক্লাসেস একদম ক্লিন এবং সমান হাইটের জন্য 'h-full' করা হয়েছে
@@ -96,8 +103,13 @@ const FeaturedLessonsCard = ({ lesson }) => {
           </div>
 
           <Link
-            href={`/public-lessons/${lesson?._id}`}
-            className="p-3 rounded-xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-200 group/btn"
+            href={isLocked ? "/pricing" : `/public-lessons/${lesson?._id}`}
+            className={`p-3 rounded-xl text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-200 group/btn ${
+              isLocked
+                ? "bg-zinc-800/60 hover:bg-zinc-800/70"
+                : "bg-linear-to-br from-purple-500 to-fuchsia-600 hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105"
+            }`}
+            title={isLocked ? "Premium content - upgrade to access" : "View lesson details"}
           >
             <Eye size={18} className="group-hover/btn:animate-pulse" />
           </Link>
