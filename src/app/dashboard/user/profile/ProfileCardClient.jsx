@@ -106,6 +106,7 @@ const ProfileCardClient = () => {
       
       {/* Top Banner / Gradient */}
       <div className="w-full h-48 md:h-64 bg-linear-to-br from-indigo-900/40 via-purple-900/20 to-zinc-900 relative overflow-hidden">
+      
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-[#0d0e12] to-transparent"></div>
       </div>
