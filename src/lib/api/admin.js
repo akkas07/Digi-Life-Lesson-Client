@@ -66,3 +66,31 @@ export const deleteUserManage = async (userId) => {
   }
 
   return data;};          
+
+
+// রিভিউ স্ট্যাটাস আপডেট
+export const updateLessonReview = async (id, isReviewed) => {
+  const res = await fetch(`${baseUrl}/api/lessons/review/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isReviewed }),
+  });
+  return res.json();
+};
+
+
+// ফিচারড স্ট্যাটাস আপডেট
+export const updateLessonFeatured = async (id, isFeatured) => {
+  const res = await fetch(`${baseUrl}/api/lessons/featured/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isFeatured }),
+  });
+  return res.json();
+};
+
+// লেসন ডিলিট
+export const deleteLessonAdmin = async (id) => {
+  const res = await fetch(`${baseUrl}/api/lessons/${id}`, { method: "DELETE" });
+  return res.json();
+};
