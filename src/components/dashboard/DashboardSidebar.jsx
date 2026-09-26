@@ -1,10 +1,5 @@
 import {
   LayoutSideContentLeft,
-  Bell,
-  Envelope,
-  Gear,
-  House,
-  Magnifier,
   Person,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";

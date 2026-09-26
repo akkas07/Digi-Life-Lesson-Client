@@ -56,6 +56,21 @@ export default function NavbarComponent({ sessionStatus }) {
     },
   ];
 
+  const dashboardLink = {
+    user: '/dashboard/user',
+    admin: '/dashboard/admin',
+  }
+
+  if(user?.email){
+    navLinks.push(
+      {
+        label: "Dashboard",
+        href: dashboardLink[user?.role] || '/user',
+        
+      }
+    )
+  }
+
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-divider bg-background/70 backdrop-blur-lg">
       <header className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">

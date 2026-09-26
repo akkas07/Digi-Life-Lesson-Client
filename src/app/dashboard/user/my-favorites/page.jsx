@@ -7,6 +7,7 @@ import { getFavoriteLessons } from "@/lib/api/favorite";
 import { ArrowRight, Trash2, Bookmark, FolderHeart } from "lucide-react";
 import { deleteFavoriteLesson } from "@/lib/actions/favorite";
 import Link from "next/link";
+import { DeleteFavorite } from "./DeleteFavorite";
 
 const MyFavoritePage = () => {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ const MyFavoritePage = () => {
   const userId = session?.user?.id;
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deletingId, setDeletingId] = useState(null);
+
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -32,39 +33,38 @@ const MyFavoritePage = () => {
     };
     fetchFavorites();
   }, [userId]);
+  // const handleDelete = async (fav) => {
+  //   const currentFavId = fav._id;
 
-  const handleDelete = async (fav) => {
-    const currentFavId = fav._id;
+  //   const targetLessonId = fav.lessonId || fav.lessonDetails?._id;
 
-    const targetLessonId = fav.lessonId || fav.lessonDetails?._id;
+  //   if (!userId || !targetLessonId) {
+  //     alert("Invalid user or lesson identifiers.");
+  //     return;
+  //   }
 
-    if (!userId || !targetLessonId) {
-      alert("Invalid user or lesson identifiers.");
-      return;
-    }
+  //   if (!confirm("Are you sure you want to remove this from your favorites?"))
+  //     return;
 
-    if (!confirm("Are you sure you want to remove this from your favorites?"))
-      return;
+  //   try {
+  //     setDeletingId(currentFavId);
 
-    try {
-      setDeletingId(currentFavId);
+  //     const response = await deleteFavoriteLesson(userId, targetLessonId);
 
-      const response = await deleteFavoriteLesson(userId, targetLessonId);
-
-      if (response.success) {
-        setFavorites((prev) =>
-          prev.filter((item) => item._id !== currentFavId),
-        );
-      } else {
-        alert(response.message || "Failed to delete item");
-      }
-    } catch (error) {
-      console.error("Error deleting favorite:", error);
-      alert("Something went wrong while removing the item.");
-    } finally {
-      setDeletingId(null);
-    }
-  };
+  //     if (response.success) {
+  //       setFavorites((prev) =>
+  //         prev.filter((item) => item._id !== currentFavId),
+  //       );
+  //     } else {
+  //       alert(response.message || "Failed to delete item");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting favorite:", error);
+  //     alert("Something went wrong while removing the item.");
+  //   } finally {
+  //     setDeletingId(null);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -185,7 +185,7 @@ const MyFavoritePage = () => {
                         )}
                       </div>
 
-                      {/* অথরের নাম */}
+                     
                       <span className="font-medium text-xs text-zinc-400">
                         {fav.lessonDetails?.userName || "Admin"}
                       </span>
@@ -203,7 +203,7 @@ const MyFavoritePage = () => {
                   </td>
 
                   {/* COLUMN 4: ACTION ICON BUTTONS */}
-                  <td className="p-4 text-right pr-6">
+                  <td className="p-4 text-right pr-10">
                     <div className="flex items-center gap-2.5 justify-end">
                       <Link
                         href={`/public-lessons`}
@@ -212,13 +212,8 @@ const MyFavoritePage = () => {
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
-                      <button
-                        onClick={() => handleDelete(fav)}
-                        className="p-2 bg-zinc-900/40 border border-zinc-850/50 text-zinc-500 hover:text-rose-400 hover:border-rose-950 rounded-xl transition-all shadow-sm"
-                        title="Remove from favorites"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <DeleteFavorite lessonId={fav.lessonId} />
+                      
                     </div>
                   </td>
                 </tr>

@@ -16,31 +16,27 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        type: "string",
         required: false,
-        defaultValue: "user", 
+        defaultValue: "user",
       },
       isBlocked: {
-        type: "boolean",
         required: false,
         defaultValue: false,
       },
       plan: {
-        type: "string",
         required: false,
         defaultValue: "free",
       },
       isPremium: {
-        type: "boolean",
         required: false,
         defaultValue: false,
       },
     },
   },
   socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
-        }, 
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
+  },
 });

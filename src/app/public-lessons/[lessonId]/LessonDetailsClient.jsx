@@ -112,6 +112,7 @@ const handleLikeToggle = async () => {
         body: JSON.stringify({ lessonId: lesson._id, userId: currentUser.id }),
       });
       const data = await res.json();
+      console.log(data, 'd')
       setIsFavorite(data.saved);
     } catch (err) {
       console.error("Favorite failed:", err);
@@ -145,7 +146,7 @@ const handleLikeToggle = async () => {
     const result = await res.json();
     if (!res.ok) throw new Error("Comment post failed");
     
-    // সার্ভার থেকে আইডি পাওয়ার পর আপডেট করুন
+    
     const newCommentObj = { ...payload, _id: result.id, createdAt: new Date() };
     setComments((prev) => [newCommentObj, ...prev]);
     setNewComment("");
