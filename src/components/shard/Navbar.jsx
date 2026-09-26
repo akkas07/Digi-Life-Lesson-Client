@@ -37,7 +37,7 @@ export default function NavbarComponent({ sessionStatus }) {
   ].filter((link) => link.show);
 
   if(pathname.includes("/dashboard")){
-    return null; // Hide the navbar on dashboard pages
+    return null; 
   }
 
   const dropdownItems = [  

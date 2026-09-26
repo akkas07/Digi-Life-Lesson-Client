@@ -25,7 +25,7 @@ const PublicLesson = async () => {
         </div>
 
         
-        <LessonsFilterWrapper initialLessons={lessons ?? []} />
+        <LessonsFilterWrapper initialLessons={lessons?.allLessons || []} />
       </div>
     </div>
   );
