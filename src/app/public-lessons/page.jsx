@@ -23,8 +23,6 @@ const PublicLesson = async () => {
            Preserve and learn from your life&apos;s greatest moments.
           </p>
         </div>
-
-        
         <LessonsFilterWrapper initialLessons={lessons?.allLessons || []} />
       </div>
     </div>

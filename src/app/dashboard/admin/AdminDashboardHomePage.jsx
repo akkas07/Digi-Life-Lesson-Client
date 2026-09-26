@@ -49,7 +49,7 @@ const topContributors = [
   },
 ];
 
-const AdminDashboardHome = ({ users, lessons, last24HoursCount }) => {
+const AdminDashboardHome = ({ users, lessons, last24HoursCount, userReportsCount }) => {
  
 
   const currentDate = new Date().toLocaleDateString("en-US", {
@@ -155,7 +155,7 @@ const AdminDashboardHome = ({ users, lessons, last24HoursCount }) => {
           </div>
           <div className="mt-4">
             <h3 className="text-3xl font-black font-mono tracking-tight text-rose-400">
-              2
+              {userReportsCount}
             </h3>
             <p className="text-[10px] text-rose-500 font-medium mt-1 animate-pulse">
               ⚠️ Action Required

@@ -9,10 +9,11 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 import { Layout } from "lucide-react";
 import { authClient, useSession } from "@/lib/auth-client";
 
-export default function NavbarComponent({ sessionStatus }) {
+export default function NavbarComponent() {
   const { data: session, isPending } = useSession();
-
+    console.log("Session Status:", session);
   const user = session?.user;
+  console.log(user)
   const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function NavbarComponent({ sessionStatus }) {
   const handleLogout = async () => {
     await authClient.signOut();
     router.push("/");
+    window.location.reload(); 
   };
 
   const navLinks = [
@@ -159,7 +161,7 @@ export default function NavbarComponent({ sessionStatus }) {
           )}
           <ThemeSwitcher />
 
-          {user ? (
+          {session ? (
             <Dropdown>
               <Dropdown.Trigger className="rounded-full cursor-pointer">
                 <Avatar
@@ -222,15 +224,14 @@ export default function NavbarComponent({ sessionStatus }) {
                     </Dropdown.Item>
                   ))}
 
-                  {/* Logout Button (Static রাখা হয়েছে কারণ এর ডিজাইন ও ভ্যারিয়েন্ট আলাদা) */}
+                 
 
                   <Dropdown.Item
                     key="logout"
                     className="text-danger"
                     color="danger"
-                    endContent={<ArrowRightFromSquare className="size-3.5" />}
-                    onClick={handleLogout}
-                  >
+                    onPress={handleLogout}
+                  ><ArrowRightFromSquare className="size-3.5" />
                     Log Out
                   </Dropdown.Item>
                 </Dropdown.Menu>
