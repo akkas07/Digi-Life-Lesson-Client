@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { deleteUserManage } from "@/lib/api/admin";
+import { deleteUserManage, updateUserRole } from "@/lib/api/admin";
 import React, { useState } from "react";
 import {
   MdOutlineManageAccounts,
@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 
 const ManageUsersPage = ({ initialUsers = [] }) => {
   const [users, setUsers] = useState(initialUsers);
+
+  const getUserIdentifier = (user) =>
+    user?._id?.toString?.() || user?.id?.toString?.() || user?.email;
 
   const handleRoleChange = async (userId, newRole) => {
     Swal.fire({
@@ -28,11 +31,13 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
         try {
           const data = await updateUserRole(userId, newRole);
 
-          if (data.success || data.modifiedCount > 0) {
-            // স্টেট আপডেট (UI ফ্রেশ করার জন্য)
+          if (data?.success || data?.modifiedCount > 0) {
+            
             setUsers((prevUsers) =>
               prevUsers.map((user) =>
-                user.id === userId ? { ...user, role: newRole } : user,
+                getUserIdentifier(user) === userId
+                  ? { ...user, role: newRole }
+                  : user,
               ),
             );
 
@@ -74,10 +79,14 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteUserManage(userId);
+          const data = await deleteUserManage(userId);
+
+          if (!data?.success) {
+            throw new Error(data?.message || "Could not delete user.");
+          }
 
           setUsers((prevUsers) =>
-            prevUsers.filter((user) => user.id !== userId),
+            prevUsers.filter((user) => getUserIdentifier(user) !== userId),
           );
 
           Swal.fire({
@@ -140,7 +149,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
           <tbody className="divide-y divide-zinc-900/50">
             {users.map((user) => (
               <tr
-                key={user.id || user._id}
+                key={getUserIdentifier(user)}
                 className="hover:bg-[#121626]/30 transition-colors group"
               >
                 {/* COLUMN 1: USER AVATAR & NAME */}
@@ -194,7 +203,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
                     <select
                       value={user.role || "user"}
                       onChange={(e) =>
-                        handleRoleChange(user.id || user._id, e.target.value)
+                        handleRoleChange(getUserIdentifier(user), e.target.value)
                       }
                       className="bg-[#0d101d] border border-zinc-850 text-xs text-zinc-300 font-medium rounded-lg px-2 py-1 focus:outline-none focus:border-purple-500/50 cursor-pointer transition-colors"
                     >
@@ -208,7 +217,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
                 <td className="p-5 text-right pr-8">
                   <button
                     onClick={() =>
-                      handleDeleteUser(user.id || user._id, user.name || "User")
+                      handleDeleteUser(getUserIdentifier(user), user.name || "User")
                     }
                     className="p-2 bg-zinc-900/40 border border-zinc-850/60 text-zinc-500 hover:text-rose-400 hover:border-rose-950/40 rounded-xl transition-all shadow-sm"
                     title="Delete User Account"

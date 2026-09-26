@@ -1,36 +1,68 @@
 'use server';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000";
+
+const readResponse = async (res) => {
+  const text = await res.text();
+
+  try {
+    return text ? JSON.parse(text) : {};
+  } catch {
+    return { message: text || "Unexpected response from the server." };
+  }
+};
 
 export const getAllUsers = async () => {
-    const res = await fetch(`${baseUrl}/api/users`);
-    return res.json();
-};
+  const res = await fetch(`${baseUrl}/api/users`, { cache: "no-store" });
 
+  if (!res.ok) {
+    const data = await readResponse(res);
+    throw new Error(data.message || data.error || "Unable to fetch users.");
+  }
+
+  return readResponse(res);
+};
 
 export const getUserReports = async () => {
-    const res = await fetch(`${baseUrl}/api/reports`);
-    return res.json();
-}
+  const res = await fetch(`${baseUrl}/api/reports`, { cache: "no-store" });
 
+  if (!res.ok) {
+    const data = await readResponse(res);
+    throw new Error(data.message || data.error || "Unable to fetch reports.");
+  }
 
-// ১. রোল আপডেট করার ফাংশন (PATCH Method)
-export const updateUserRole = async (userId, newRole) => {
-    const res = await fetch(`${baseUrl}/api/users/${userId}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ role: newRole }),
-    });
-    return res.json();
+  return readResponse(res);
 };
 
-// ২. ইউজার ডিলিট করার ফাংশন (DELETE Method)
+export const updateUserRole = async (userId, newRole) => {
+  const res = await fetch(`${baseUrl}/api/users/${userId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ role: newRole }),
+    cache: "no-store",
+  });
+
+  const data = await readResponse(res);
+
+  if (!res.ok) {
+    throw new Error(data.message || data.error || "Could not update role.");
+  }
+
+  return data;
+};
+
 export const deleteUserManage = async (userId) => {
-    const res = await fetch(`${baseUrl}/api/users/${userId}`, { // স্পেস ফিক্স করা হয়েছে
-        method: "DELETE",
-    });
-    return res.json();
-};     
-          
+  const res = await fetch(`${baseUrl}/api/users/${userId}`, {
+    method: "DELETE",
+    cache: "no-store",
+  });
+
+  const data = await readResponse(res);
+
+  if (!res.ok) {
+    throw new Error(data.message || data.error || "Could not delete user.");
+  }
+
+  return data;};          
