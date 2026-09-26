@@ -40,19 +40,19 @@ export default function NavbarComponent({ sessionStatus }) {
     return null; // Hide the navbar on dashboard pages
   }
 
-  const dropdownItems = [
-    {
-      id: "profile",
-      label: "My Profile",
-      href: "/dashboard/profile",
-      icon: <Gear className="size-3.5 text-muted-foreground" />,
-    },
+  const dropdownItems = [  
     {
       id: "dashboard",
       label: "Dashboard",
-      href: user?.role === "admin" ? "/dashboard/admin" : "/dashboard",
       href: user?.role === "user" ? "/dashboard/user" : "/dashboard",
+      href: user?.role === "admin" ? "/dashboard/admin" : "/dashboard",
       icon: <Layout className="size-3.5 text-muted-foreground" />,
+    },
+    {
+      id: "profile",
+      label: "My Profile",
+      href: "/dashboard/user/profile",
+      icon: <Gear className="size-3.5 text-muted-foreground" />,
     },
   ];
 
