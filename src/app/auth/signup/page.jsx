@@ -133,7 +133,7 @@ const RegisterPage = () => {
       <div className="absolute -top-40 -left-40 w-125 h-96 bg-orange-500/10 rounded-full blur-3xl -z-10" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl -z-10" />
 
-      <div className="w-full max-w-md p-8 rounded-2xl border border-default-200/60 bg-background/50 backdrop-blur-md shadow-xl space-y-6">
+      <div className="w-full max-w-lg p-12 rounded-2xl border border-default-200/60 bg-background/50 backdrop-blur-md shadow-xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="inline-flex p-3 rounded-xl bg-linear-to-r from-violet-500 to-indigo-600 text-white mb-2">

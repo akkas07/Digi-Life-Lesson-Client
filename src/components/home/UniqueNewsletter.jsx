@@ -68,7 +68,6 @@ export default function UniqueNewsletter() {
                       variant="flat"
                       radius="full"
                       size="lg"
-                      startContent={<Mail size={18} className="text-default-400 shrink-0" />}
                       className={{
                         base: "w-full bg-transparent",
                         mainWrapper: "h-full",

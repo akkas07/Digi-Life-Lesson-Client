@@ -2,37 +2,40 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button, Dropdown, Avatar } from "@heroui/react";
 import { ArrowRightFromSquare, Gear } from "@gravity-ui/icons";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { Layout } from "lucide-react";
+import { authClient, useSession } from "@/lib/auth-client";
 
-export default function NavbarComponent({ user, sessionStatus }) {
+export default function NavbarComponent({ sessionStatus }) {
+  const { data: session, isPending } = useSession();
+
+  const user = session?.user;
+  const router = useRouter();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
   // Auth & Premium states
-  const isLoggedIn = sessionStatus === "authenticated" && user;
+  const isLoggedIn = !!user;
   const isPremium = user?.isPremium || false;
 
   const isActive = (path) => pathname === path;
 
-  
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/");
+  };
+
   const navLinks = [
     { label: "Home", href: "/", show: true },
     { label: "Public Lessons", href: "/public-lessons", show: true },
     { label: "Add Lesson", href: "/dashboard/add-lesson", show: isLoggedIn },
     { label: "My Lessons", href: "/dashboard/my-lessons", show: isLoggedIn },
-    {
-      label: "Pricing / Upgrade",
-      href: "/pricing",
-      show: isLoggedIn && !isPremium,
-      isWarning: true,
-    },
   ].filter((link) => link.show);
 
-  
   const dropdownItems = [
     {
       id: "profile",
@@ -83,7 +86,10 @@ export default function NavbarComponent({ user, sessionStatus }) {
             </svg>
           </button>
 
-          <Link href="/" className="font-bold text-xl flex items-center gap-2 bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent">
+          <Link
+            href="/"
+            className="font-bold text-xl flex items-center gap-2 bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent"
+          >
             ✨{" "}
             <span className="tracking-tight  bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent">
               Digital Life Lessons
@@ -113,9 +119,21 @@ export default function NavbarComponent({ user, sessionStatus }) {
 
         {/* Right Side: Theme Switcher & Authentication */}
         <div className="flex items-center gap-4">
+          {isLoggedIn && !isPremium && (
+            <Link href="/pricing" className="hidden sm:inline-block">
+              <Button
+                color="warning"
+                variant="flat"
+                size="sm"
+                className="font-bold animate-pulse text-warning"
+              >
+               ⭐ Upgrade 
+              </Button>
+            </Link>
+          )}
           <ThemeSwitcher />
 
-          {isLoggedIn ? (
+          {user ? (
             <Dropdown>
               <Dropdown.Trigger className="rounded-full cursor-pointer">
                 <Avatar
@@ -129,7 +147,7 @@ export default function NavbarComponent({ user, sessionStatus }) {
                   <Avatar.Image
                     alt={user.name}
                     src={
-                      user.photoURL ||
+                      user.image ||
                       "https://images.unsplash.com/photo-1534528741775-53994a69daeb"
                     }
                   />
@@ -142,12 +160,15 @@ export default function NavbarComponent({ user, sessionStatus }) {
               <Dropdown.Popover>
                 {/* Header User Meta Summary */}
                 <div className="px-3 pt-3 pb-2 border-b border-divider min-w-50">
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col gap-0.5 space-y-2">
                     <p className="text-xs text-foreground/60 leading-none">
                       Signed in as
                     </p>
                     <p className="text-sm font-bold text-foreground leading-normal">
                       {user.name}
+                    </p>
+                    <p className="text-xs text-foreground/60 leading-none">
+                      {user.email}
                     </p>
                     {isPremium && (
                       <span className="text-[10px] bg-warning/20 text-warning px-1.5 py-0.5 rounded font-extrabold w-max mt-1">
@@ -176,15 +197,15 @@ export default function NavbarComponent({ user, sessionStatus }) {
                   ))}
 
                   {/* Logout Button (Static রাখা হয়েছে কারণ এর ডিজাইন ও ভ্যারিয়েন্ট আলাদা) */}
+
                   <Dropdown.Item
-                    id="logout"
-                    textValue="Log Out"
-                    variant="danger"
+                    key="logout"
+                    className="text-danger"
+                    color="danger"
+                    endContent={<ArrowRightFromSquare className="size-3.5" />}
+                    onClick={handleLogout}
                   >
-                    <button className="flex w-full items-center justify-between gap-2 text-left font-semibold text-danger">
-                      <span>Log Out</span>
-                      <ArrowRightFromSquare className="size-3.5 text-danger" />
-                    </button>
+                    Log Out
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown.Popover>
@@ -192,9 +213,9 @@ export default function NavbarComponent({ user, sessionStatus }) {
           ) : (
             <div className="hidden items-center gap-3 sm:flex">
               <Link href="/auth/signin">
-                <Button  variant="light" size="sm">
-                Login
-              </Button>
+                <Button variant="light" size="sm">
+                  Login
+                </Button>
               </Link>
               <Link href="/auth/signup">
                 <Button
