@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import LessonsFilterWrapper from "@/components/lessons/LessonsFilterWrapper";
 import { showLessons } from "@/lib/api/lessons";
 import React from "react";

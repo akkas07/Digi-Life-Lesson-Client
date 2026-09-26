@@ -226,6 +226,7 @@ export default function AddLessonPage() {
 
       {/* Main Framework Box */}
       <div className="w-full max-w-5xl bg-zinc-900/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-zinc-800/80 overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[80vh] z-10">
+      
         {/* LEFT PANEL */}
         <div className="md:col-span-4 bg-linear-to-b from-[#180828] via-[#0d0614] to-[#09040e] p-8 md:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-zinc-800/60 relative">
           <div className="space-y-8">
