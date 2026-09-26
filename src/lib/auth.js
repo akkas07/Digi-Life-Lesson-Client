@@ -2,13 +2,21 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
+if (!process.env.MONGODB_URI) {
+  throw new Error("MONGODB_URI is not set");
+}
+
+if (!process.env.BETTER_AUTH_SECRET) {
+  throw new Error("BETTER_AUTH_SECRET is not set");
+}
+
 const client = new MongoClient(process.env.MONGODB_URI);
-const db = client.db(process.env.MONGODB_DB_NAME);
+const db = client.db(process.env.MONGODB_DB_NAME || "digital-life-lessons");
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL,
   basePath: "/api/auth",
-  secret: process.env.BETTER_AUTH_SECRET || "your-secret-key-change-this-in-production",
+  secret: process.env.BETTER_AUTH_SECRET,
   trustHost: true,
   database: mongodbAdapter(db, {
     // Optional: if you don't provide a client, database transactions won't be enabled.
