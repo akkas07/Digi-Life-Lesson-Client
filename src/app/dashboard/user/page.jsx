@@ -1,11 +1,20 @@
+'use client';
+
+import UserDashboard from '@/components/dashboard/UserDashboard';
+import { useSession } from '@/lib/auth-client';
 import React from 'react';
 
-const UserDashboardHomePage = () => {
+const UserHomePage = () => {
+
+    
+
+
     return (
         <div>
-            <h2>User Dashboard</h2>
+            
+        <UserDashboard />
         </div>
     );
 };
 
-export default UserDashboardHomePage;
+export default UserHomePage;

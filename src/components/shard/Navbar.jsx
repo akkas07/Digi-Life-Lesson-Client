@@ -36,6 +36,10 @@ export default function NavbarComponent({ sessionStatus }) {
     { label: "My Lessons", href: "/dashboard/my-lessons", show: isLoggedIn },
   ].filter((link) => link.show);
 
+  if(pathname.includes("/dashboard")){
+    return null; // Hide the navbar on dashboard pages
+  }
+
   const dropdownItems = [
     {
       id: "profile",
@@ -47,6 +51,7 @@ export default function NavbarComponent({ sessionStatus }) {
       id: "dashboard",
       label: "Dashboard",
       href: user?.role === "admin" ? "/dashboard/admin" : "/dashboard",
+      href: user?.role === "user" ? "/dashboard/user" : "/dashboard",
       icon: <Layout className="size-3.5 text-muted-foreground" />,
     },
   ];

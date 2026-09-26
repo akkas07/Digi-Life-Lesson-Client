@@ -7,10 +7,16 @@ import { BsInstagram, BsYoutube } from "react-icons/bs";
 import { LiaLinkedin } from "react-icons/lia";
 import { Globe, Mail } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null);
+
+  const pathname = usePathname();
+  if (pathname.includes("/dashboard")) {
+    return null;
+  }
 
   const handleSubscribe = (e) => {
     e.preventDefault();
