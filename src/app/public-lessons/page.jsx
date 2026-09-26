@@ -1,4 +1,4 @@
-import PaginatedLessons from "@/components/lessons/PaginatedLessons";
+import LessonsFilterWrapper from "@/components/lessons/LessonsFilterWrapper";
 import { showLessons } from "@/lib/api/lessons";
 import React from "react";
 
@@ -18,13 +18,12 @@ const PublicLesson = async () => {
             Vault Stream
           </h1>
           <p className="mt-2 text-sm text-zinc-400 font-medium">
-            Discover unfiltered life experiences, mindset shifts, and compiled
-            human wisdom.
+            Discover unfiltered life experiences, mindset shifts, and compiled human wisdom.
           </p>
         </div>
 
-        {/* Paginated lesson cards — 10 per page */}
-        <PaginatedLessons lessons={lessons ?? []} />
+        
+        <LessonsFilterWrapper initialLessons={lessons ?? []} />
       </div>
     </div>
   );
