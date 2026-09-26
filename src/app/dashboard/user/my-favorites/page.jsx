@@ -5,12 +5,17 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { getFavoriteLessons } from "@/lib/api/favorite";
 import { ArrowRight, Trash2, Bookmark, FolderHeart } from "lucide-react";
+import { deleteFavoriteLesson } from "@/lib/actions/favorite";
+import Link from "next/link";
 
 const MyFavoritePage = () => {
   const { data: session } = useSession();
+  const user = session?.user;
+
   const userId = session?.user?.id;
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -28,6 +33,39 @@ const MyFavoritePage = () => {
     fetchFavorites();
   }, [userId]);
 
+  const handleDelete = async (fav) => {
+    const currentFavId = fav._id;
+
+    const targetLessonId = fav.lessonId || fav.lessonDetails?._id;
+
+    if (!userId || !targetLessonId) {
+      alert("Invalid user or lesson identifiers.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to remove this from your favorites?"))
+      return;
+
+    try {
+      setDeletingId(currentFavId);
+
+      const response = await deleteFavoriteLesson(userId, targetLessonId);
+
+      if (response.success) {
+        setFavorites((prev) =>
+          prev.filter((item) => item._id !== currentFavId),
+        );
+      } else {
+        alert(response.message || "Failed to delete item");
+      }
+    } catch (error) {
+      console.error("Error deleting favorite:", error);
+      alert("Something went wrong while removing the item.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#040712] flex items-center justify-center text-zinc-500 font-mono text-xs tracking-widest">
@@ -38,7 +76,6 @@ const MyFavoritePage = () => {
 
   return (
     <div className="p-6 sm:p-10 min-h-screen bg-[#040712] text-zinc-100 relative overflow-hidden">
-      
       {/* Background Subtle Ambient Glows - Matching your brand layout */}
       <div className="absolute top-[-20%] right-[-10%] w-96 h-96 bg-purple-950/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-fuchsia-950/5 rounded-full blur-[100px] pointer-events-none" />
@@ -50,10 +87,15 @@ const MyFavoritePage = () => {
             <FolderHeart className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">Saved Collection</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+              Saved Collection
+            </h1>
             <p className="text-xs text-zinc-400 font-medium mt-1">
               Your personal index of wisdom. You have bookmarked{" "}
-              <span className="text-purple-400 font-bold font-mono">{favorites.length}</span> entries.
+              <span className="text-purple-400 font-bold font-mono">
+                {favorites.length}
+              </span>{" "}
+              entries.
             </p>
           </div>
         </div>
@@ -70,21 +112,22 @@ const MyFavoritePage = () => {
               <th className="p-4 font-bold text-right pr-6">Actions</th>
             </tr>
           </thead>
-          
+
           {favorites.length === 0 ? (
             <tbody>
               <tr>
-                <td
-                  colSpan={4}
-                  className="p-16 text-center bg-[#090b14]/20"
-                >
+                <td colSpan={4} className="p-16 text-center bg-[#090b14]/20">
                   <div className="flex flex-col items-center justify-center space-y-3">
                     <div className="p-3 bg-zinc-900/40 border border-zinc-800/60 rounded-full text-zinc-600">
                       <Bookmark className="w-6 h-6" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-zinc-400">No favorites found.</p>
-                      <p className="text-xs text-zinc-600 mt-1">Please add some lessons to your favorites list.</p>
+                      <p className="text-sm font-semibold text-zinc-400">
+                        No favorites found.
+                      </p>
+                      <p className="text-xs text-zinc-600 mt-1">
+                        Please add some lessons to your favorites list.
+                      </p>
                     </div>
                   </div>
                 </td>
@@ -114,7 +157,10 @@ const MyFavoritePage = () => {
                       <span className="text-[9px] font-bold text-purple-400 uppercase tracking-widest block">
                         {fav.lessonDetails?.category || "Lesson"}
                       </span>
-                      <p className="font-bold text-sm text-zinc-200 truncate" title={fav.lessonDetails?.title}>
+                      <p
+                        className="font-bold text-sm text-zinc-200 truncate"
+                        title={fav.lessonDetails?.title}
+                      >
                         {fav.lessonDetails?.title || "Untitled Lesson"}
                       </p>
                     </div>
@@ -123,11 +169,23 @@ const MyFavoritePage = () => {
                   {/* COLUMN 2: AUTHOR RADIAL INITIALS */}
                   <td className="p-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-purple-950/60 border border-purple-800/30 text-purple-300 flex items-center justify-center text-xs font-black uppercase">
-                        {fav.lessonDetails?.userName
-                          ? fav.lessonDetails.userName.substring(0, 1)
-                          : "A"}
+                      <div className="w-7 h-7 rounded-full bg-purple-950/60 border border-purple-800/30 text-purple-300 flex items-center justify-center text-xs font-black uppercase overflow-hidden">
+                        {fav.lessonDetails?.userImage ? (
+                          <img
+                            src={fav.lessonDetails.userImage}
+                            alt={fav.lessonDetails?.userName || "Author"}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span>
+                            {fav.lessonDetails?.userName
+                              ? fav.lessonDetails.userName.substring(0, 1)
+                              : "A"}
+                          </span>
+                        )}
                       </div>
+
+                      {/* অথরের নাম */}
                       <span className="font-medium text-xs text-zinc-400">
                         {fav.lessonDetails?.userName || "Admin"}
                       </span>
@@ -138,20 +196,24 @@ const MyFavoritePage = () => {
                   <td className="p-4">
                     <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-zinc-400 bg-zinc-900/60 px-2.5 py-1 rounded-lg border border-zinc-850/40">
                       <span className="w-1 h-1 rounded-full bg-purple-500" />
-                      {fav.createdAt ? new Date(fav.createdAt).toLocaleDateString() : "Recent"}
+                      {fav.createdAt
+                        ? new Date(fav.createdAt).toLocaleDateString()
+                        : "Recent"}
                     </span>
                   </td>
 
                   {/* COLUMN 4: ACTION ICON BUTTONS */}
                   <td className="p-4 text-right pr-6">
                     <div className="flex items-center gap-2.5 justify-end">
-                      <button
+                      <Link
+                        href={`/public-lessons`}
                         className="p-2 bg-zinc-900/40 border border-zinc-850/50 text-zinc-400 hover:text-purple-400 hover:border-purple-900/50 rounded-xl transition-all shadow-sm"
                         title="View Lesson"
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
+                      </Link>
                       <button
+                        onClick={() => handleDelete(fav)}
                         className="p-2 bg-zinc-900/40 border border-zinc-850/50 text-zinc-500 hover:text-rose-400 hover:border-rose-950 rounded-xl transition-all shadow-sm"
                         title="Remove from favorites"
                       >
@@ -165,7 +227,6 @@ const MyFavoritePage = () => {
           )}
         </table>
       </div>
-
     </div>
   );
 };
