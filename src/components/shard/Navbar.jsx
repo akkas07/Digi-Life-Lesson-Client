@@ -32,8 +32,8 @@ export default function NavbarComponent({ sessionStatus }) {
   const navLinks = [
     { label: "Home", href: "/", show: true },
     { label: "Public Lessons", href: "/public-lessons", show: true },
-    { label: "Add Lesson", href: "/dashboard/add-lesson", show: isLoggedIn },
-    { label: "My Lessons", href: "/dashboard/my-lessons", show: isLoggedIn },
+    { label: "Add Lesson", href: "/dashboard/user/add-lesson", show: isLoggedIn },
+    { label: "My Lessons", href: "/dashboard/user/my-lessons", show: isLoggedIn },
   ].filter((link) => link.show);
 
   if(pathname.includes("/dashboard")){

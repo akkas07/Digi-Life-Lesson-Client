@@ -1,14 +1,23 @@
-import { getLessons } from "@/lib/api/lessons";
+import { getLessonByUserId, getLessons } from "@/lib/api/lessons";
 import React from "react";
 import Link from "next/link";
 import { Button, Badge } from "@heroui/react";
 
-import { Plus, Pencil, TrashBin, Heart, Globe } from "@gravity-ui/icons";
+import { Plus, Pencil, TrashBin, Heart,  } from "@gravity-ui/icons";
 import { ChartAreaIcon } from "lucide-react";
+import { getSession } from "@/lib/actions/core/getSession";
+
 
 const MyLessonPage = async () => {
-  const lessonId = "lesson_123";
-  const lessons = await getLessons(lessonId);
+
+  const user = await getSession();
+  const userId = user?.id;
+
+  console.log(userId, 'user Id')
+
+
+  const lessons = await getLessonByUserId(userId);
+  
 
   const lessonsList = Array.isArray(lessons)
     ? lessons
@@ -45,7 +54,7 @@ const MyLessonPage = async () => {
             </p>
           </div>
 
-          <Link href="/dashboard/add-lesson" passHref>
+          <Link href="/dashboard/user/add-lesson" passHref>
             <Button
               color="default"
               className="bg-[#112211] text-zinc-100 font-semibold text-sm px-5 py-6 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.1)] hover:shadow-[0_0_25px_rgba(16,185,129,0.2)] hover:opacity-90 flex items-center gap-2 border border-emerald-900/50 transition-all duration-300"

@@ -1,11 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { Eye, Calendar } from 'lucide-react';
+import Link from 'next/link';
 
 const LessonCard = ({ lesson }) => {
 
     
  
-  const { title, shortDescription, category, emotionalTone, accessLevel, createdAt } = lesson;
+  const { title, shortDescription, category, emotionalTone, accessLevel, createdAt, userId, userName, userEmail, userImage } = lesson || {};
+
+  console.log(lesson)
 
   
   const toneStyles = {
@@ -62,24 +66,28 @@ const LessonCard = ({ lesson }) => {
            
             <div className="avatar placeholder">
               <div className="bg-linear-to-br from-cyan-500/20 to-purple-600/30 text-cyan-300 border border-cyan-500/30 rounded-xl w-10 h-10 flex items-center justify-center font-bold text-sm">
-                AR
+                {userImage ? (
+                  <img src={userImage} alt={userName} className="w-full h-full object-cover rounded-xl" />
+                ) : (
+                  <span>{userName?.charAt(0) || "U"}</span>
+                )}
               </div>
             </div>
             
             
             <div className="flex flex-col">
               <span className="text-[11px] uppercase tracking-wider text-zinc-500 font-bold">POSTED BY</span>
-              <span className="text-sm font-bold text-zinc-200 hover:text-purple-400 transition-colors duration-200 cursor-pointer">Ashikur Rahman</span>
+              <span className="text-sm font-bold text-zinc-200 hover:text-purple-400 transition-colors duration-200 cursor-pointer">{userName || "Anonymous"}</span>
               <span className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5">
                 <Calendar size={11} /> {createdAt}
               </span>
             </div>
           </div>
 
-          {/* নিয়ন পার্পল ভিউ বাটন আইকন */}
-          <button className="p-3 rounded-xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-200 group/btn">
+          
+          <Link href={`/public-lessons/${lesson?._id}`} className="p-3 rounded-xl bg-linear-to-br from-purple-500 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-200 group/btn">
             <Eye size={18} className="group-hover/btn:animate-pulse" />
-          </button>
+          </Link>
         </div>
 
       </div>

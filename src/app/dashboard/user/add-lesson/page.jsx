@@ -17,10 +17,16 @@ import {
 import { createLesson } from "@/lib/actions/lesson";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 
 export default function AddLessonPage() {
   // Current Step Tracker
   const [currentStep, setCurrentStep] = useState(1);
+
+  const {data: session } = useSession();
+  const user = session?.user || null;
+
+  
 
   const router = useRouter();
 
@@ -179,7 +185,13 @@ export default function AddLessonPage() {
         lessonId: mockLessonId,
         createdAt: new Date().toISOString().split("T")[0],
         image: uploadedImageUrl,
+        userId: user?.id || null, 
+        userName: user?.name || null, 
+        userImage: user?.image || null, 
+        userEmail: user?.email || null, 
       };
+
+      console.log(payload);
 
       const res = await createLesson(payload);
 
@@ -194,7 +206,7 @@ export default function AddLessonPage() {
         setSelectedFile(null);
         setImagePreview(null);
         setCurrentStep(1);
-        router.push("/dashboard/my-lessons");
+        router.push("/dashboard/user/my-lessons");
       } else {
         toast.error("Failed to commit lesson data.");
       }
@@ -389,6 +401,7 @@ export default function AddLessonPage() {
                       <input
                         type="file"
                         accept="image/*"
+                        isRequired={true}
                         onChange={handleImageChange}
                         className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                       />

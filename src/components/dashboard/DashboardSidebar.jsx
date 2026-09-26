@@ -9,14 +9,28 @@ import {
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
+import { IoIosAddCircle, IoIosBook } from "react-icons/io";
+import { MdFavoriteBorder, MdOutlineDashboard } from "react-icons/md";
 
 export function DashboardSidebar() {
   const navItems = [
-    { icon: House, label: "Home", href: "/dashboard/user" },
-    { icon: Magnifier, label: "Add Lesson", href: "/dashboard/add-lesson" },
-    { icon: Bell, label: "My Lessons", href: "/dashboard/my-lessons" },
-    { icon: Envelope, label: "My Favorites", href: "/dashboard/my-favorites" },
-    { icon: Person, label: "Profile", href: "/dashboard/profile" },
+    { icon: MdOutlineDashboard, label: "Dashboard", href: "/dashboard/user" },
+    {
+      icon: IoIosAddCircle,
+      label: "Add Lesson",
+      href: "/dashboard/user/add-lesson",
+    },
+    {
+      icon: IoIosBook,
+      label: "My Lessons",
+      href: "/dashboard/user/my-lessons",
+    },
+    {
+      icon: MdFavoriteBorder,
+      label: "My Favorites",
+      href: "/dashboard/user/my-favorites",
+    },
+    { icon: Person, label: "Profile", href: "/dashboard/user/profile" },
   ];
 
   const navContent = (
@@ -36,9 +50,24 @@ export function DashboardSidebar() {
 
   return (
     <>
-        <aside className="hidden w-64 shrink-0 border-r border-default p-4 lg:block">
-          {navContent}
-        </aside>
+      <aside className="hidden w-64 shrink-0 border-r border-default p-4 lg:block">
+        <div>
+          <Link
+          href="/"
+          className="font-bold text-xl flex items-center gap-2 bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent"
+        >
+          ✨{" "}
+          <span className="tracking-tight  bg-linear-to-r from-violet-500 to-indigo-600 bg-clip-text text-transparent">
+            Digital Life Lessons
+          </span>
+        </Link>
+        <h2 className="text-lg font-semibold text-foreground text-center mt-4">Book of Wisdom</h2>
+        <p className="text-muted-foreground text-sm text-center text-gray-500 mb-4">
+          User Dashboard
+        </p>
+        </div>
+        {navContent}
+      </aside>
 
       <Drawer>
         <Button variant="secondary" className="lg:hidden">

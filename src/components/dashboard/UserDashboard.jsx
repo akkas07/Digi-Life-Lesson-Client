@@ -14,11 +14,12 @@ import {
   Quote,
 } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+import { getLessonByUserId } from "@/lib/api/lessons";
 
-export default function UserDashboard({
-  userStats = null,
-  recentLessons = [],
-}) {
+export default function UserDashboard(
+  
+  {lessons = [], likeCount = [0], userStats = null, recentLessons = [] },
+) {
   const [timeFrame, setTimeFrame] = useState("This Week");
 
   const { data: session, isPending } = useSession();
@@ -29,14 +30,17 @@ export default function UserDashboard({
 
   const user = session?.user;
 
-  // ডামি কাউন্টার যদি কোনো ডেটা পাস না করা হয়
   const stats = userStats || {
     created: 0,
     saved: 0,
     impact: 0,
   };
 
-  // কারেন্ট ডেট ফরম্যাটিং (যেমন: MONDAY, JUNE 22)
+  const lessonCount = lessons.length;
+
+  console.log(likeCount)
+  
+
   const currentDate = new Date()
     .toLocaleDateString("en-US", {
       weekday: "long",
@@ -76,7 +80,7 @@ export default function UserDashboard({
             </div>
             <div className="mt-4 space-y-1">
               <h2 className="text-4xl font-extrabold tracking-tight">
-                {stats.created}
+                {lessonCount}
               </h2>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
                 Lessons Created
@@ -114,7 +118,7 @@ export default function UserDashboard({
             </div>
             <div className="mt-4 space-y-1">
               <h2 className="text-4xl font-extrabold tracking-tight">
-                {stats.impact}
+                {likeCount?.result?.length}
               </h2>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
                 Impact (Likes)
