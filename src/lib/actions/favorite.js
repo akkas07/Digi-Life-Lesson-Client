@@ -2,15 +2,13 @@
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-// Changed parameters order to (userId, lessonId) to match your UI Component layout!
 export const deleteFavoriteLesson = async (userId, lessonId) => {
     try {
-        const res = await fetch(`${baseUrl}/api/favorites`, {
-            method: 'DELETE',
+        const res = await fetch(`${baseUrl}/api/favorites/${userId}/${lessonId}`, {
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId, lessonId }) // Matches expected backend keys
+            }
         });
 
         if (!res.ok) {
@@ -18,7 +16,15 @@ export const deleteFavoriteLesson = async (userId, lessonId) => {
             return { success: false, message: errorMsg?.message || "Failed to delete item" };
         }
 
-        return await res.json();
+        const data = await res.json();
+        
+        
+        if (data && data.success) {
+            return { success: true, message: data.message || "Deleted successfully" };
+        } else {
+            return { success: false, message: data.message || "Item not found" };
+        }
+        
     } catch (error) {
         console.error("Network or internal error:", error);
         return { success: false, message: "Something went wrong while removing the item." };

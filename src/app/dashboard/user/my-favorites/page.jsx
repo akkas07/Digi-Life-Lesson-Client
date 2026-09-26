@@ -17,7 +17,6 @@ const MyFavoritePage = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!userId) return;
@@ -185,7 +184,6 @@ const MyFavoritePage = () => {
                         )}
                       </div>
 
-                     
                       <span className="font-medium text-xs text-zinc-400">
                         {fav.lessonDetails?.userName || "Admin"}
                       </span>
@@ -203,17 +201,26 @@ const MyFavoritePage = () => {
                   </td>
 
                   {/* COLUMN 4: ACTION ICON BUTTONS */}
+
                   <td className="p-4 text-right pr-10">
                     <div className="flex items-center gap-2.5 justify-end">
                       <Link
                         href={`/public-lessons`}
-                        className="p-2 bg-zinc-900/40 border border-zinc-850/50 text-zinc-400 hover:text-purple-400 hover:border-purple-900/50 rounded-xl transition-all shadow-sm"
+                        className="p-2 bg-zinc-900/40 border border-zinc-800/50 text-zinc-400 hover:text-purple-400 hover:border-purple-900/50 rounded-xl transition-all shadow-sm"
                         title="View Lesson"
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
-                      <DeleteFavorite lessonId={fav.lessonId} />
-                      
+
+                      {/* 💡 এখানে onDeleteSuccess প্রপসটি পাস করুন */}
+                      <DeleteFavorite
+                        lessonId={fav.lessonId}
+                        onDeleteSuccess={(deletedId) => {
+                          setFavorites((prev) =>
+                            prev.filter((item) => item.lessonId !== deletedId),
+                          );
+                        }}
+                      />
                     </div>
                   </td>
                 </tr>

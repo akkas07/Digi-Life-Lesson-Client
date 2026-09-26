@@ -6,21 +6,15 @@ import { Button } from "@heroui/react";
 import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 
-export const DeleteFavorite = ({ lessonId }) => {
-  
+export const DeleteFavorite = ({ lessonId, onDeleteSuccess }) => {
   const { data: session } = useSession();
-  const user = session?.user;
-
   const userId = session?.user?.id;
 
   const handleDelete = async () => {
-    const res = await deleteFavoriteLesson(userId, lessonId);
-    console.log(res, "delete response");
-
-    if (!res.success) {
+    if (!userId || !lessonId) {
       Swal.fire({
         title: "Error!",
-        text: res.message || "Failed to delete item",
+        text: "User or Lesson ID is missing.",
         icon: "error",
       });
       return;
@@ -34,15 +28,35 @@ export const DeleteFavorite = ({ lessonId }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // 💡 Put your Next.js Server Action or fetch API call here
+        try {
+          const res = await deleteFavoriteLesson(userId, lessonId);
+          if (res.success) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your favorite has been removed.",
+              icon: "success",
+            });
 
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your favorite has been removed.",
-          icon: "success",
-        });
+            if (onDeleteSuccess) {
+              onDeleteSuccess(lessonId);
+            }
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: res?.message || "Failed to delete item",
+              icon: "error",
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting favorite:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Something went wrong on the server.",
+            icon: "error",
+          });
+        }
       }
     });
   };
