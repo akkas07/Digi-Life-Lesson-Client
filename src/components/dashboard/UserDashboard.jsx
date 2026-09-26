@@ -36,9 +36,11 @@ export default function UserDashboard(
     impact: 0,
   };
 
-  const lessonCount = lessons.length;
+  const lessonCount = Array.isArray(lessons) ? lessons.length : 0;
 
-  console.log(likeCount)
+  
+  const totalLikes = likeCount ? likeCount.length : 0;
+
   
 
   const currentDate = new Date()
@@ -118,7 +120,7 @@ export default function UserDashboard(
             </div>
             <div className="mt-4 space-y-1">
               <h2 className="text-4xl font-extrabold tracking-tight">
-                {likeCount?.result?.length}
+                {totalLikes}
               </h2>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
                 Impact (Likes)

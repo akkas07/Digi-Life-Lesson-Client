@@ -13,6 +13,7 @@ const UserHomePage = async () => {
   const lessons = await getLessonByUserId(userId);
 
   const likeCount = await getLikeCount(userId);
+  
 
 
     return (
