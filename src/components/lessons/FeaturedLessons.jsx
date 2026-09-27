@@ -14,12 +14,12 @@ const FeaturedLessons = async () => {
   }
 
   return (
-    <div className="bg-[#000000] py-12">
+    <div className=" dark:bg-[#000000] py-12">
       <div className="text-center max-w-3xl mx-auto px-4 mb-12">
-        <h1 className="text-3xl font-serif font-bold text-zinc-100 tracking-wide mb-3">
+        <h1 className="text-3xl font-serif font-bold text-app-text  tracking-wide mb-3">
           Featured Life Lessons
         </h1>
-        <p className="text-zinc-400/90">
+        <p className="text-zinc-600 dark:text-zinc-400/90">
           A curated treasury of exceptional wisdom from our community
         </p>
       </div>

@@ -58,7 +58,7 @@ export default function DynamicFAQ() {
             </div>
 
             {/* Live Support Box */}
-            <div className="p-6 rounded-[28px] border border-default-200/50 bg-default-50/10 backdrop-blur-md relative overflow-hidden group shadow-lg">
+              <div className="p-6 rounded-[28px] border border-default-200/50 bg-default-50/10 backdrop-blur-md relative overflow-hidden group shadow-lg">
               <div className="absolute -right-6 -bottom-6 p-6 rounded-full bg-linear-to-br from-violet-500/10 to-indigo-500/0 text-violet-500/20 scale-150 group-hover:scale-175 transition-transform duration-500">
                 <MessageSquare size={48} />
               </div>

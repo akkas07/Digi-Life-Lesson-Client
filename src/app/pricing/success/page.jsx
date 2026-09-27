@@ -32,7 +32,7 @@ export default async function Success({ searchParams }) {
     }
 
     return (
-      <main className="min-h-screen bg-[#0B0F19] text-white flex items-center justify-center p-6 antialiased relative overflow-hidden">
+      <main className="min-h-screen bg-white text-slate-900 flex items-center justify-center p-6 antialiased relative overflow-hidden dark:bg-[#0B0F19] dark:text-white">
         {/* Glowing Violet Decorative Background Effects to match your landing page */}
         <div className="absolute top-[-10%] left-[-10%] w-150 h-150 rounded-full bg-[#6366F1]/10 blur-[150px] pointer-events-none" />
         <div className="absolute bottom-[-10%] right-[-10%] w-125 h-125 rounded-full bg-[#A855F7]/10 blur-[130px] pointer-events-none" />

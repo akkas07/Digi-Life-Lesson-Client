@@ -107,7 +107,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
   };
 
   return (
-    <div className="p-6 sm:p-10 min-h-screen bg-[#040712] text-zinc-100 relative overflow-hidden">
+    <div className="p-6 sm:p-10 min-h-screen bg-app-bg text-app-text relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-[-20%] right-[-10%] w-96 h-96 bg-purple-950/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-fuchsia-950/5 rounded-full blur-[100px] pointer-events-none" />
@@ -119,7 +119,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
             <MdOutlineManageAccounts className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+            <h1 className="text-2xl font-bold tracking-tight   text-app-text">
               User Management
             </h1>
             <p className="text-xs text-zinc-400 font-medium mt-1">
@@ -134,10 +134,10 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
       </div>
 
       {/* --- Core Governance Table --- */}
-      <div className="w-full overflow-x-auto rounded-[24px] border border-zinc-900 bg-[#090b14]/40 backdrop-blur-md relative z-10 shadow-2xl">
-        <table className="w-full border-collapse text-left">
+      <div className="w-full overflow-x-auto rounded-[24px] border border-zinc-900 bg-app-bg text-app-text backdrop-blur-md relative z-10 shadow-2xl">
+        <table className="w-full border-collapse text-left bg-app-bg text-app-text">
           <thead>
-            <tr className="text-zinc-500 uppercase text-[10px] tracking-widest border-b border-zinc-900 bg-[#0d101d]/60">
+            <tr className="text-app-text uppercase text-[10px] tracking-widest border-b border-zinc-900 bg-app-bg/60">
               <th className="p-5 font-bold">User Information</th>
               <th className="p-5 font-bold">Contact Email</th>
               <th className="p-5 font-bold">Lessons Created</th>
@@ -150,7 +150,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
             {users.map((user) => (
               <tr
                 key={getUserIdentifier(user)}
-                className="hover:bg-[#121626]/30 transition-colors group"
+                className="hover:bg-app-bg/20 transition-colors group"
               >
                 {/* COLUMN 1: USER AVATAR & NAME */}
                 <td className="p-5">
@@ -169,7 +169,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
                       )}
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-zinc-200 group-hover:text-purple-400 transition-colors">
+                      <p className="font-bold text-sm   text-app-text group-hover:text-purple-400 transition-colors">
                         {user.name || "Anonymous"}
                       </p>
                       <span className="text-[9px] font-mono tracking-widest uppercase font-bold text-zinc-500 block mt-0.5">
@@ -189,7 +189,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
 
                 {/* COLUMN 3: TOTAL LESSONS BADGE */}
                 <td className="p-5">
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-purple-300 bg-purple-950/30 px-2.5 py-1 rounded-lg border border-purple-900/20">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold  px-2.5 py-1 rounded-lg border border-purple-900/20">
                     {user.totalLessons || 0} Lessons
                   </span>
                 </td>
@@ -231,7 +231,7 @@ const ManageUsersPage = ({ initialUsers = [] }) => {
         </table>
 
         {users.length === 0 && (
-          <div className="p-16 text-center text-zinc-500 font-mono text-xs tracking-widest">
+          <div className="p-16 text-center text-app-text font-mono text-xs tracking-widest">
             NO USERS ARCHIVED WITHIN SYSTEM.
           </div>
         )}

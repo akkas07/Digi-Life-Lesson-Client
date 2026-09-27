@@ -36,7 +36,7 @@ const LessonCard = ({ lesson, isPremiumUser = false }) => {
     toneStyles[emotionalTone] || "border-zinc-700 text-zinc-400 bg-zinc-800/20";
 
   return (
-    <div className="inline-flex flex-col justify-between w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] m-1.5 md:m-1.5 lg:m-2 bg-[#0a1120] border border-zinc-800/80 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-all duration-300 hover:border-zinc-700/50 hover:shadow-2xl hover:shadow-purple-950/10 min-h-87.5 vertical-top group">
+    <div className="inline-flex flex-col justify-between w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] m-1.5 md:m-1.5 lg:m-2 bg-white dark:bg-[#0a1120] border border-zinc-200 dark:border-zinc-800/80 rounded-3xl p-6 shadow-xl relative overflow-hidden transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-700/50 hover:shadow-2xl hover:shadow-purple-950/10 min-h-87.5 vertical-top group">
       {/* Top Header Row */}
       <div className="flex items-center justify-between w-full mb-5">
         <span className="text-[11px] tracking-widest uppercase font-bold px-3 py-1.5 rounded-full border border-purple-500/20 text-purple-300 bg-purple-950/30">
@@ -72,14 +72,14 @@ const LessonCard = ({ lesson, isPremiumUser = false }) => {
           </div>
         )}
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-linear-to-t from-[#0a1120]/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-t dark:from-[#0a1120]/80 from-transparent to-transparent"></div>
       </div>
 
       {/* ৪. কন্টেন্ট এরিয়া */}
       <div
         className={`grow flex flex-col justify-start transition-all duration-300 ${isLocked ? "blur-[3px] opacity-20 select-none pointer-events-none" : ""}`}
       >
-        <h2 className="text-2xl font-serif font-bold text-zinc-100 tracking-wide mb-3 leading-snug line-clamp-2 hover:text-purple-300 transition-colors cursor-pointer">
+        <h2 className="text-2xl font-serif font-bold  text-app-text tracking-wide mb-3 leading-snug line-clamp-2 hover:text-purple-300 transition-colors cursor-pointer">
           {title}
         </h2>
         <p className="text-sm font-sans font-medium text-zinc-400/90 leading-relaxed line-clamp-3 mb-6">

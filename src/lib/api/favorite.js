@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export const getFavoriteLessons = async (userId) => {
   const res = await fetch(`${baseUrl}/api/favorites/user/${userId}`, {

@@ -60,7 +60,7 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#040712] text-zinc-100 py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-white text-slate-900 py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden dark:bg-[#040712] dark:text-zinc-100">
       {/* Background Luxury Ambient Glows */}
       <div className="absolute top-[-10%] right-[-15%] w-125 h-125 bg-purple-950/15 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-[20%] left-[-10%] w-112.5 h-112.5 bg-fuchsia-950/10 rounded-full blur-[140px] pointer-events-none" />

@@ -1,4 +1,4 @@
-// app/providers.tsx
+// app/providers.jsx
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -9,7 +9,8 @@ export function Providers({ children }) {
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange>
+      disableTransitionOnChange
+    >
       {children}
     </NextThemesProvider>
   );

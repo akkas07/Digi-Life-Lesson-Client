@@ -52,7 +52,7 @@ const AdminDashboardHome = ({
   });
 
   return (
-    <div className="p-6 sm:p-10 min-h-screen bg-[#040712] text-zinc-100 relative overflow-hidden">
+    <div className="p-6 sm:p-10 min-h-screen bg-app-bg text-app-text relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-[-20%] right-[-10%] w-96 h-96 bg-purple-950/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-fuchsia-950/5 rounded-full blur-[100px] pointer-events-none" />
@@ -63,7 +63,7 @@ const AdminDashboardHome = ({
           <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest bg-purple-950/40 border border-purple-900/30 px-2.5 py-1 rounded-md">
             Admin Access
           </span>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-100 mt-2">
+          <h1 className="text-3xl font-bold tracking-tight  text-app-text mt-2">
             Dashboard Overview
           </h1>
         </div>

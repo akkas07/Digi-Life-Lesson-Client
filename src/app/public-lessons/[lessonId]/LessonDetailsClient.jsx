@@ -7,8 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 const LessonDetailsClient = ({ lesson }) => {
   const {
@@ -91,6 +93,7 @@ const handleLikeToggle = async () => {
     // 3. Sync with real server data
     setIsLiked(data.liked);
     setLikesCount(data.count);
+    toast.success(data.liked ? "Liked successfully!" : "Like removed successfully.");
   } catch (err) {
     // 4. Rollback on failure
     setIsLiked(previousLiked);
@@ -114,6 +117,7 @@ const handleLikeToggle = async () => {
       const data = await res.json();
       console.log(data, 'd')
       setIsFavorite(data.saved);
+      toast.success(data.saved ? "Lesson saved successfully!" : "Lesson removed from saved list.");
     } catch (err) {
       console.error("Favorite failed:", err);
     } finally {
@@ -150,9 +154,10 @@ const handleLikeToggle = async () => {
     const newCommentObj = { ...payload, _id: result.id, createdAt: new Date() };
     setComments((prev) => [newCommentObj, ...prev]);
     setNewComment("");
+    toast.success("Comment posted successfully!");
   } catch (err) {
     console.error("Failed to post comment:", err);
-    alert("Comment posting failed!");
+    toast.error("Comment posting failed!");
   } finally {
     setCommentLoading(false);
   }
@@ -178,6 +183,15 @@ useEffect(() => {
   // Submit report
   const handleReportSubmit = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "You must be logged in to report a lesson.",
+      });
+      setShowReportModal(false);
+      return;
+    }
     if (!reportReason || reportLoading) return;
     setReportLoading(true);
     try {
@@ -186,16 +200,45 @@ useEffect(() => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           lessonId: lesson._id,
-          userId: currentUser?.id || null,
+          userId: currentUser?.id || currentUser?._id || "unknown", // Fallback if id is missing
+          userEmail: currentUser?.email || "unknown@example.com",
           reason: reportReason,
+          details: "Reported from client", // Add details since backend might expect it or it's good practice
           createdAt: new Date(),
         }),
       });
-      if (!res.ok) throw new Error("Report failed");
+      
+      const responseText = await res.text();
+      console.log("Raw response from /api/reports:", responseText);
+      console.log("Response status:", res.status);
+      
+      let responseBody = null;
+      try {
+        responseBody = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse response as JSON:", parseError);
+      }
+
+      if (!res.ok) {
+        const message = responseBody?.message || `Report failed (Status: ${res.status})`;
+        throw new Error(message);
+      }
+      
+      Swal.fire({
+        icon: "success",
+        title: "Report Submitted",
+        text: "Your report has been successfully submitted.",
+      });
+
       setShowReportModal(false);
       setReportReason("");
     } catch (err) {
       console.error("Report failed:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Report Failed",
+        text: err.message || "Something went wrong!",
+      });
     } finally {
       setReportLoading(false);
     }
@@ -204,11 +247,11 @@ useEffect(() => {
   const isPremiumLocked = accessLevel === "Premium" && !isPremiumUser;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 bg-[#0B0C0E] min-h-screen text-zinc-300 antialiased space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-app-bg text-app-text min-h-screen  antialiased space-y-8  ">
       <div className="flex items-center justify-between">
         <Link
           href="/public-lessons"
-          className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:border-purple-500/40 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-purple-500/40 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to lessons
@@ -219,7 +262,7 @@ useEffect(() => {
       </div>
 
       {/* Hero Banner */}
-      <div className="relative aspect-video w-full h-75 md:h-112.5 rounded-[24px] overflow-hidden bg-zinc-900 border border-zinc-900 shadow-2xl">
+      <div className="relative aspect-video w-full h-75 md:h-112.5 rounded-[24px] overflow-hidden bg-zinc-100 border border-zinc-200 shadow-2xl dark:bg-zinc-900 dark:border-zinc-900">
         <Image
           src={image || "/image/register.png"}
           alt={title}
@@ -242,26 +285,26 @@ useEffect(() => {
       </div>
 
       {/* Insights Row */}
-      <div className="bg-[#111214] border border-zinc-900 rounded-[22px] p-5 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-[#16171B] p-3 rounded-xl border border-zinc-850/50">
+      <div className="bg-white/90 border border-zinc-200 rounded-[22px] p-5 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-4 dark:bg-[#111214] dark:border-zinc-900">
+        <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200 dark:bg-[#16171B] dark:border-zinc-850/50">
           <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</span>
-          <span className="text-xs font-semibold text-zinc-300 truncate block mt-0.5">{category || "Philosophy"}</span>
+          <span className="text-xs font-semibold text-zinc-700 truncate block mt-0.5 dark:text-zinc-300">{category || "Philosophy"}</span>
         </div>
-        <div className="bg-[#16171B] p-3 rounded-xl border border-zinc-850/50">
+        <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200 dark:bg-[#16171B] dark:border-zinc-850/50">
           <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Tone</span>
-          <span className="text-xs font-semibold text-zinc-300 truncate block mt-0.5">🎭 {emotionalTone || "Philosophical"}</span>
+          <span className="text-xs font-semibold text-zinc-700 truncate block mt-0.5 dark:text-zinc-300">🎭 {emotionalTone || "Philosophical"}</span>
         </div>
-        <div className="bg-[#16171B] p-3 rounded-xl border border-zinc-850/50">
+        <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200 dark:bg-[#16171B] dark:border-zinc-850/50">
           <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Visibility</span>
-          <span className="text-xs font-bold text-purple-400 uppercase tracking-wide block mt-0.5">{accessLevel || "Public"}</span>
+          <span className="text-xs font-bold text-purple-500 uppercase tracking-wide block mt-0.5 dark:text-purple-400">{accessLevel || "Public"}</span>
         </div>
-        <div className="bg-[#16171B] p-3 rounded-xl border border-zinc-850/50 flex items-center justify-center gap-1.5 text-rose-400 font-bold text-xs">
+        <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200 flex items-center justify-center gap-1.5 text-rose-500 font-bold text-xs dark:bg-[#16171B] dark:border-zinc-850/50 dark:text-rose-400">
           <Heart className="w-3.5 h-3.5 fill-current text-[#FF4A75]" /> {likesCount} Likes
         </div>
       </div>
 
       {isPremiumLocked && (
-        <div className="bg-[#16171B] border border-purple-900/40 rounded-[24px] p-6 shadow-xl">
+        <div className="bg-white border border-purple-200 rounded-[24px] p-6 shadow-xl dark:bg-[#16171B] dark:border-purple-900/40">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <div className="inline-flex items-center rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-purple-300">
@@ -270,7 +313,7 @@ useEffect(() => {
               <h3 className="mt-3 text-xl font-semibold text-white">
                 Unlock this lesson with a premium membership.
               </h3>
-              <p className="mt-2 text-sm text-zinc-400">
+              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                 This wisdom block is reserved for premium readers. Upgrade once and you&apos;ll be able to view the full story, reflections, and takeaways.
               </p>
             </div>
@@ -279,7 +322,7 @@ useEffect(() => {
                 Upgrade to Premium
               </Link>
               {!isLoggedIn && (
-                <Link href="/auth/signin" className="inline-flex items-center justify-center rounded-xl border border-zinc-700 px-4 py-2.5 text-sm font-semibold text-zinc-300 transition hover:border-zinc-500 hover:text-white">
+                <Link href="/auth/signin" className="inline-flex items-center justify-center rounded-xl border border-zinc-300 px-4 py-2.5 text-sm font-semibold text-zinc-700 transition hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-white">
                   Sign in
                 </Link>
               )}
@@ -290,42 +333,42 @@ useEffect(() => {
 
       {/* Core Lesson Content */}
       {!isPremiumLocked && (
-      <div className="bg-[#111214] border border-zinc-900 rounded-[24px] p-6 md:p-8 shadow-xl space-y-6">
-        <div className="flex items-center gap-2.5 border-b border-zinc-900 pb-4">
+      <div className="bg-white border border-zinc-200 rounded-[24px] p-6 md:p-8 shadow-xl space-y-6 dark:bg-[#111214] dark:border-zinc-900">
+        <div className="flex items-center gap-2.5 border-b border-zinc-200 pb-4 dark:border-zinc-900">
           <div className="p-2 bg-purple-950/40 border border-purple-900/50 rounded-xl">
             <BookOpen className="text-purple-400 w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-white tracking-wide">
-            The Core Lesson: <span className="text-zinc-400 font-normal">{title}</span>
+          <h2 className="text-xl font-bold text-white  tracking-wide">
+            The Core Lesson: <span className="text-zinc-600 font-normal dark:text-zinc-400">{title}</span>
           </h2>
         </div>
 
-        <div className="bg-[#1A1520] p-5 border-l-4 border-purple-600 rounded-r-xl">
-          <span className="block text-[10px] uppercase font-black text-purple-400 tracking-widest mb-1">Brief Overview</span>
-          <p className="text-sm md:text-base text-zinc-300 italic font-medium">{shortDescription}</p>
+        <div className="bg-purple-50 p-5 border-l-4 border-purple-600 rounded-r-xl dark:bg-[#1A1520]">
+          <span className="block text-[10px] uppercase font-black text-purple-600 tracking-widest mb-1 dark:text-purple-400">Brief Overview</span>
+          <p className="text-sm md:text-base text-zinc-700 italic font-medium dark:text-zinc-300">{shortDescription}</p>
         </div>
 
-        <div className="text-zinc-400 leading-relaxed space-y-4 text-sm md:text-base">
+        <div className="text-zinc-600 leading-relaxed space-y-4 text-sm md:text-base dark:text-zinc-400">
           <p>
-            Welcome to this structured learning asset built around{" "}
-            <span className="text-zinc-200 font-semibold">{title}</span>. Curated intentionally to spark mental clarity, this topic delves into specialized models under a contextual framework.
+            Welcome to this structured learning asset built around
+            <span className="bg-app-bg text-app-text font-semibold">{title}</span>. Curated intentionally to spark mental clarity, this topic delves into specialized models under a contextual framework.
           </p>
           <p>
             As learners interact with this wisdom block, the goal remains consistency in conceptual absorbing over raw replication.
           </p>
         </div>
 
-        <div className="bg-[#151717] border border-zinc-850 p-5 rounded-2xl space-y-2 mt-4">
-          <h4 className="text-sm font-bold text-amber-400 flex items-center gap-1.5">
+        <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-2 mt-4 dark:bg-[#151717] dark:border-zinc-850">
+          <h4 className="text-sm font-bold text-amber-600 flex items-center gap-1.5 dark:text-amber-400">
             <Star className="w-4 h-4 fill-current" /> Key Takeaway
           </h4>
-          <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
+          <p className="text-xs md:text-sm text-zinc-700 leading-relaxed dark:text-zinc-400">
             Embrace the journey and integrate these insights into your daily routines for long-term growth.
           </p>
         </div>
 
         {/* Action Toolbar */}
-        <div className="flex items-center justify-between pt-4 border-t border-zinc-900 text-xs">
+        <div className="flex items-center justify-between pt-4 border-t border-zinc-200 text-xs dark:border-zinc-900">
           <div className="flex items-center gap-3">
             <button
               onClick={handleLikeToggle}
@@ -333,8 +376,8 @@ useEffect(() => {
               title={!isLoggedIn ? "Login to like" : ""}
               className={`px-4 py-2 rounded-xl border font-bold transition ${
                 isLiked
-                  ? "bg-purple-950/40 text-purple-400 border-purple-800"
-                  : "bg-[#16171B] border-zinc-800 text-zinc-400 hover:text-zinc-200"
+                  ? "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-800"
+                  : "bg-white border-zinc-200 text-zinc-700 hover:text-zinc-900 dark:bg-[#16171B] dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
               } disabled:opacity-50`}
             >
               {likeLoading ? "..." : isLiked ? "✓ Liked" : "Like"}
@@ -346,8 +389,8 @@ useEffect(() => {
               title={!isLoggedIn ? "Login to save" : ""}
               className={`px-4 py-2 rounded-xl border font-bold transition ${
                 isFavorite
-                  ? "bg-purple-950/40 text-purple-400 border-purple-800"
-                  : "bg-[#16171B] border-zinc-800 text-zinc-400 hover:text-zinc-200"
+                  ? "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-800"
+                  : "bg-white border-zinc-200 text-zinc-700 hover:text-zinc-900 dark:bg-[#16171B] dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
               } disabled:opacity-50`}
             >
               {favoriteLoading ? "..." : isFavorite ? "★ Saved" : "Save"}
@@ -365,17 +408,17 @@ useEffect(() => {
       )}
 
       {/* Comments Section */}
-      <div className="bg-[#111214] border border-zinc-900 rounded-[24px] p-6 shadow-xl space-y-6">
-        <h3 className="text-md font-bold text-zinc-200 tracking-wide flex items-center gap-2">
+      <div className="bg-white border border-zinc-200 rounded-[24px] p-6 shadow-xl space-y-6 dark:bg-[#111214] dark:border-zinc-900">
+        <h3 className="text-md font-bold text-zinc-800 tracking-wide flex items-center gap-2 dark:text-zinc-200">
           Discussion{" "}
-          <span className="bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full text-xs font-medium">
+          <span className="bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded-full text-xs font-medium dark:bg-zinc-800 dark:text-zinc-400">
             {comments.length}
           </span>
         </h3>
 
         {isLoggedIn && (
           <form onSubmit={handleCommentSubmit} className="flex items-start gap-4">
-            <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 bg-zinc-800">
+            <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 bg-zinc-200 dark:bg-zinc-800">
               {currentUser?.image ? (
                 <img src={currentUser.image} alt="You" className="w-full h-full object-cover" />
               ) : (
@@ -390,7 +433,7 @@ useEffect(() => {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Share your realization..."
-                className="w-full text-xs md:text-sm text-zinc-200 bg-[#16171B] border border-zinc-850 focus:outline-none focus:border-purple-600/60 rounded-xl px-4 py-3 transition"
+                className="w-full text-xs md:text-sm text-zinc-700 bg-white border border-zinc-300 focus:outline-none focus:border-purple-600/60 rounded-xl px-4 py-3 transition dark:bg-[#16171B] dark:border-zinc-850 dark:text-zinc-200"
               />
               <div className="flex justify-end">
                 <button
@@ -412,8 +455,8 @@ useEffect(() => {
             </p>
           )}
           {comments.map((comment) => (
-            <div key={comment._id} className="bg-[#16171B]/60 border border-zinc-900 p-4 rounded-xl flex gap-4">
-              <div className="w-9 h-9 rounded-full bg-zinc-800 overflow-hidden shrink-0">
+            <div key={comment._id} className="bg-zinc-50 border border-zinc-200 p-4 rounded-xl flex gap-4 dark:bg-[#16171B]/60 dark:border-zinc-900">
+              <div className="w-9 h-9 rounded-full bg-zinc-200 overflow-hidden shrink-0 dark:bg-zinc-800">
                 {comment.userImage ? (
                   <img src={comment.userImage} alt={comment.userName} className="w-full h-full object-cover" />
                 ) : (
@@ -424,8 +467,8 @@ useEffect(() => {
               </div>
               <div className="space-y-1 w-full">
                 <div className="flex items-center justify-between w-full">
-                  <h4 className="text-xs font-bold text-zinc-300">{comment.userName}</h4>
-                  <span className="text-[10px] text-zinc-600 font-medium">
+                  <h4 className="text-xs font-bold text-zinc-700 dark:text-zinc-300">{comment.userName}</h4>
+                  <span className="text-[10px] text-zinc-500 font-medium dark:text-zinc-600">
                     {comment.createdAt
                       ? new Date(comment.createdAt).toLocaleString("en-US", {
                           month: "short",
@@ -436,7 +479,7 @@ useEffect(() => {
                       : "Just now"}
                   </span>
                 </div>
-                <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">{comment.text}</p>
+                <p className="text-xs md:text-sm text-zinc-600 leading-relaxed dark:text-zinc-400">{comment.text}</p>
               </div>
             </div>
           ))}
@@ -446,7 +489,7 @@ useEffect(() => {
       {/* Report Modal */}
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#111214] p-6 rounded-2xl shadow-2xl max-w-sm w-full border border-zinc-900 relative">
+          <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full border border-zinc-200 relative dark:bg-[#111214] dark:border-zinc-900">
             <button
               onClick={() => setShowReportModal(false)}
               className="absolute right-4 top-4 text-zinc-500 hover:text-zinc-300"
@@ -459,7 +502,7 @@ useEffect(() => {
                 required
                 value={reportReason}
                 onChange={(e) => setReportReason(e.target.value)}
-                className="w-full bg-[#16171B] border border-zinc-800 rounded-xl p-2.5 text-xs text-zinc-300 focus:outline-none focus:border-purple-500"
+                className="w-full bg-white border border-zinc-300 rounded-xl p-2.5 text-xs text-zinc-700 focus:outline-none focus:border-purple-500 dark:bg-[#16171B] dark:border-zinc-800 dark:text-zinc-300"
               >
                 <option value="">Select a reason...</option>
                 <option value="Inappropriate">Inappropriate Content</option>
@@ -471,7 +514,7 @@ useEffect(() => {
                 <Button
                   size="sm"
                   onPress={() => setShowReportModal(false)}
-                  className="bg-zinc-900 text-zinc-400 rounded-xl"
+                  className="bg-zinc-100 text-zinc-700 rounded-xl dark:bg-zinc-900 dark:text-zinc-400"
                 >
                   Cancel
                 </Button>

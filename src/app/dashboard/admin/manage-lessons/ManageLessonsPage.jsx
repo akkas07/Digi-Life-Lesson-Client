@@ -23,7 +23,7 @@ import {
 
 
 
-const ManageLessonPage = ({ lessonData }) => {
+const ManageLessonPage = ({ lessonData, report }) => {
   const [lessons, setLessons] = useState(lessonData?.allLessons || []);
 
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -168,8 +168,10 @@ const ManageLessonPage = ({ lessonData }) => {
     return matchCategory && matchVisibility && matchStatus;
   });
 
+  
+
   return (
-    <div className="p-6 sm:p-10 min-h-screen bg-[#040712] text-zinc-100 relative overflow-hidden">
+    <div className="p-6 sm:p-10 min-h-screen bg-app-bg text-app-text relative overflow-hidden">
       {/* Ambient Radial Backgrounds */}
       <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-purple-950/20 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-fuchsia-950/10 rounded-full blur-[100px] pointer-events-none" />
@@ -184,7 +186,7 @@ const ManageLessonPage = ({ lessonData }) => {
             <div className="inline-block px-2.5 py-0.5 bg-purple-950/50 text-purple-400 text-[10px] font-bold uppercase tracking-wider rounded-md border border-purple-800/30 mb-1.5">
               Admin Access
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-100">
+            <h1 className="text-3xl font-bold tracking-tight  text-app-text">
               Wisdom Moderation
             </h1>
             <p className="text-xs text-zinc-400 font-medium mt-1">
@@ -196,7 +198,7 @@ const ManageLessonPage = ({ lessonData }) => {
 
       {/* --- STATS COUNTER ROW --- */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8 relative z-10">
-        <div className="p-5 border border-zinc-900/60 bg-[#090b14]/40 backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
+        <div className="p-5 border border-zinc-900/60 bg-app-bg backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
           <div>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
               Public Lessons
@@ -211,7 +213,7 @@ const ManageLessonPage = ({ lessonData }) => {
           </div>
         </div>
 
-        <div className="p-5 border border-zinc-900/60 bg-[#090b14]/40 backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
+        <div className="p-5 border border-zinc-900/60 bg-app-bg backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
           <div>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
               Premium Lessons
@@ -226,13 +228,13 @@ const ManageLessonPage = ({ lessonData }) => {
           </div>
         </div>
 
-        <div className="p-5 border border-zinc-900/60 bg-[#090b14]/40 backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
+        <div className="p-5 border border-zinc-900/60 bg-app-bg backdrop-blur-md rounded-2xl flex items-center justify-between shadow-lg">
           <div>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
               Pending Reports
             </p>
             <h3 className="text-2xl font-black font-mono text-rose-400 mt-1">
-              {flaggedCount.length}
+              {report.length}
             </h3>
             <p className="text-[10px] text-rose-400/80 font-medium mt-1">⚠️ Action Required</p>
           </div>
@@ -243,16 +245,16 @@ const ManageLessonPage = ({ lessonData }) => {
       </div>
 
       {/* --- FILTERS CONTROLLER --- */}
-      <div className="p-4 mb-6 border border-zinc-900/60 bg-[#090b14]/40 backdrop-blur-md rounded-2xl flex flex-wrap gap-4 items-center relative z-10 shadow-sm">
-        <div className="flex items-center gap-2 text-zinc-400 text-xs font-bold mr-2">
-          <MdFilterList className="w-4 h-4 text-purple-400" />
+      <div className="p-4 mb-6 border border-zinc-900/60 bg-app-bg/40 text-app-text backdrop-blur-md rounded-2xl flex flex-wrap gap-4 items-center relative z-10 shadow-sm">
+        <div className="flex items-center gap-2 text-app-text/70 text-xs font-bold mr-2">
+          <MdFilterList className="w-4 h-4  text-app-text" />
           <span>Filters Matrix:</span>
         </div>
 
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="bg-[#0d101d] border border-zinc-800 text-xs text-zinc-300 rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
+          className=" border border-zinc-800 text-xs bg-app-bg text-app-text rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
         >
           <option value="all">All Categories</option>
           <option value="Career">Career</option>
@@ -263,7 +265,7 @@ const ManageLessonPage = ({ lessonData }) => {
         <select
           value={visibilityFilter}
           onChange={(e) => setVisibilityFilter(e.target.value)}
-          className="bg-[#0d101d] border border-zinc-800 text-xs text-zinc-300 rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
+          className=" bg-app-bg text-app-text border border-zinc-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
         >
           <option value="all">All Visibility</option>
           <option value="public">Public Only</option>
@@ -273,7 +275,7 @@ const ManageLessonPage = ({ lessonData }) => {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-[#0d101d] border border-zinc-800 text-xs text-zinc-300 rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
+          className=" border border-zinc-800 text-xs  bg-app-bg text-app-text rounded-xl px-3 py-2 outline-none focus:border-purple-500/50 transition-all cursor-pointer"
         >
           <option value="all">All Statuses</option>
           <option value="flagged">Flagged Content</option>
@@ -283,10 +285,10 @@ const ManageLessonPage = ({ lessonData }) => {
       </div>
 
       {/* --- LESSONS MANAGEMENT TABLE --- */}
-      <div className="w-full overflow-x-auto rounded-[24px] border border-zinc-900 bg-[#090b14]/30 backdrop-blur-xl relative z-10 shadow-2xl">
-        <table className="w-full border-collapse text-left">
+      <div className="w-full overflow-x-auto rounded-[24px] border border-zinc-900 bg-app-bg text-app-text backdrop-blur-xl relative z-10 shadow-2xl">
+        <table className="w-full border-collapse text-left bg-app-bg text-app-text">
           <thead>
-            <tr className="text-zinc-500 uppercase text-[10px] tracking-widest border-b border-zinc-900/60 bg-[#0d101d]/60">
+            <tr className="text-app-text uppercase text-[10px] tracking-widest border-b border-zinc-900/60 bg-app-bg/60">
               <th className="p-5 font-bold">Lesson Context</th>
               <th className="p-5 font-bold">Author</th>
               <th className="p-5 font-bold">Date Posted</th>
@@ -300,7 +302,7 @@ const ManageLessonPage = ({ lessonData }) => {
               return (
                 <tr
                   key={currentId}
-                  className="hover:bg-[#121626]/20 transition-colors group"
+                  className="hover:bg-app-bg/20 transition-colors group"
                 >
                   {/* COLUMN 1: IMAGE, TITLE & CATEGORY TAG */}
                   <td className="p-5">
@@ -318,7 +320,7 @@ const ManageLessonPage = ({ lessonData }) => {
                       )}
                       
                       <div>
-                        <p className="font-bold text-sm text-zinc-200 group-hover:text-purple-400 transition-colors line-clamp-1">
+                        <p className="font-bold text-sm   text-app-text group-hover:text-purple-400 transition-colors line-clamp-1">
                           {lesson.title}
                         </p>
                         <span className="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-800/60 text-zinc-400 rounded-md">
@@ -410,7 +412,7 @@ const ManageLessonPage = ({ lessonData }) => {
         </table>
 
         {filteredLessons.length === 0 && (
-          <div className="p-16 text-center text-zinc-500 font-mono text-xs tracking-widest">
+          <div className="p-16 text-center text-app-text font-mono text-xs tracking-widest">
             NO LESSONS INDEXED WITH CURRENT FILTER PARAMETERS.
           </div>
         )}

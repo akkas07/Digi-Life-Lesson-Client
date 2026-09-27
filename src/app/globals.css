@@ -1,2 +1,35 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+/* টেইলউইন্ড থিম কনফিগারেশন */
+@theme {
+  --color-app-bg: var(--app-bg);
+  --color-app-text: var(--app-text);
+}
+
+:root {
+  color-scheme: light;
+  /* লাইট মোডের কালার ভ্যালু */
+  --app-bg: #ffffff;
+  --app-text: #0f172a;
+}
+
+html.dark {
+  color-scheme: dark;
+  /* ডার্ক মোডের কালার ভ্যালু (আপনার থিমের কালার) */
+  --app-bg: #040712;
+  --app-text: #f4f4f5; /* zinc-100 এর কাছাকাছি */
+}
+
+html.light {
+  color-scheme: light;
+  --app-bg: #ffffff;
+  --app-text: #0f172a;
+}
+
+/* গ্লোবালি বডি বা রুট ট্যাগগুলোতে অটো-অ্যাসাইন করা */
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  transition: background-color 0.3s ease, color 0.3s ease; /* মোড চেঞ্জের সময় স্মুথ ট্রানজিশন */
+}

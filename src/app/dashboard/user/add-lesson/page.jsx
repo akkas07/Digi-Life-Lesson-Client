@@ -228,7 +228,7 @@ export default function AddLessonPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#09090b] text-zinc-100 flex items-center justify-center p-4 md:p-8 font-sans antialiased selection:bg-purple-500/30 relative">
+    <div className="w-full min-h-screen  flex items-center justify-center p-4 md:p-8 font-sans antialiased selection:bg-app-bg relative bg-app-bg text-app-text">
       {/* Background Neon Glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
@@ -237,9 +237,9 @@ export default function AddLessonPage() {
       <div className="w-full max-w-5xl bg-zinc-900/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-zinc-800/80 overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[80vh] z-10">
       
         {/* LEFT PANEL */}
-        <div className="md:col-span-4 bg-linear-to-b from-[#180828] via-[#0d0614] to-[#09040e] p-8 md:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-zinc-800/60 relative">
+        <div className="md:col-span-4 bg-linear-to-b bg-app-bg text-app-text p-8 md:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r  relative">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-purple-500/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-500/20 text-xs font-medium tracking-wide text-purple-300">
+            <div className="inline-flex items-center gap-2 bg-app-bg text-app-text backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-500/20 text-xs font-medium tracking-wide ">
               <Sparkles className="h-3.5 w-3.5 animate-pulse text-purple-400" />{" "}
               Digital Vault
             </div>
@@ -257,12 +257,12 @@ export default function AddLessonPage() {
               </p>
             </div>
 
-            <div className="bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl space-y-2 hidden md:block backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-xs font-semibold text-purple-400">
+            <div className="bg-app-bg text-app-text p-4 rounded-xl space-y-2 hidden md:block backdrop-blur-sm">
+              <div className="flex items-center gap-2 text-xs font-semibold  text-app-text">
                 <FileText className="h-3.5 w-3.5" />
                 <span>Step Insight</span>
               </div>
-              <p className="text-[11px] text-zinc-500 leading-normal">
+              <p className="text-[11px] text-app-text leading-normal">
                 {currentStep === 1 &&
                   "Start with a crystalline headline that captures the immediate lesson."}
                 {currentStep === 2 &&
@@ -309,13 +309,13 @@ export default function AddLessonPage() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="md:col-span-8 p-6 md:p-10 flex flex-col justify-between bg-zinc-950/20">
+        <div className="md:col-span-8 p-6 md:p-10 flex flex-col justify-between bg-app-bg text-app-text">
           <div className="min-h-[46vh] flex flex-col justify-center">
             {/* STEP 1: Inputs */}
             {currentStep === 1 && (
               <div className="space-y-5 animate-in fade-in duration-300">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-purple-400/80 block pl-0.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-app-text block pl-0.5">
                     The Headline
                   </label>
                   <input
@@ -323,7 +323,7 @@ export default function AddLessonPage() {
                     value={headline}
                     onChange={(e) => setHeadline(e.target.value)}
                     placeholder="e.g., The Art of Saying No Without Feeling Guilty"
-                    className="w-full bg-zinc-900/60 border border-zinc-800/80 focus:border-purple-500/50 rounded-xl px-4 py-3.5 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-purple-500/20 transition-all duration-200"
+                    className="w-full bg-app-bg text-app-text focus:border-purple-500/50 rounded-xl px-4 py-3.5 text-sm  placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-purple-500/20 transition-all duration-200"
                   />
                 </div>
 
@@ -336,7 +336,7 @@ export default function AddLessonPage() {
                     value={lesson}
                     onChange={(e) => setLesson(e.target.value)}
                     placeholder="Unpack your raw realization, the setup, and the outcome..."
-                    className="w-full bg-zinc-900/60 border border-zinc-800/80 focus:border-purple-500/50 rounded-xl px-4 py-3.5 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-purple-500/20 transition-all duration-200 resize-none"
+                    className="w-full bg-app-bg text-app-text focus:border-purple-500/50 rounded-xl px-4 py-3.5 text-sm  placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-purple-500/20 transition-all duration-200 resize-none"
                   />
                 </div>
               </div>
@@ -358,7 +358,7 @@ export default function AddLessonPage() {
                         className={`text-xs px-4 py-2.5 rounded-xl font-medium border transition-all duration-200 ${
                           selectedCategory === cat
                             ? "bg-purple-600 text-white border-transparent shadow-lg shadow-purple-600/10"
-                            : "bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                            : "bg-app-bg text-app-text"
                         }`}
                       >
                         {cat}
@@ -380,7 +380,7 @@ export default function AddLessonPage() {
                         className={`text-xs p-3 rounded-xl font-medium border flex flex-col items-center justify-center gap-2 transition-all duration-200 bg-linear-to-b ${
                           selectedTone === tone.name
                             ? "from-purple-950/50 to-zinc-900 border-purple-500 text-purple-300 ring-1 ring-purple-500/30 scale-[1.02]"
-                            : "from-zinc-900/30 to-zinc-900/80 border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                            : "bg-app-bg text-app-text"
                         }`}
                       >
                         <span className="text-xl">{tone.emoji}</span>
@@ -466,12 +466,12 @@ export default function AddLessonPage() {
                     <select
                       value={visibility}
                       onChange={(e) => setVisibility(e.target.value)}
-                      className="w-full bg-zinc-900/60 border border-zinc-800 focus:border-purple-500/40 rounded-xl px-4 py-3.5 text-sm text-zinc-300 appearance-none focus:outline-none cursor-pointer font-medium transition-colors"
+                      className="w-full bg-app-bg text-app-text rounded-xl px-4 py-3.5 text-sm appearance-none focus:outline-none cursor-pointer font-medium transition-colors"
                     >
-                      <option value="Public" className="bg-zinc-900">
+                      <option value="Public" className="text-app-text">
                         Public — Stream to all system discoverers
                       </option>
-                      <option value="Premium" className="bg-zinc-900">
+                      <option value="Premium" className="text-app-text">
                         Premium — Gate behind elite membership token
                       </option>
                     </select>
@@ -491,15 +491,15 @@ export default function AddLessonPage() {
           </div>
 
           {/* LOWER SECTION: Form Steering Actions */}
-          <div className="pt-5 border-t border-zinc-800/60 flex items-center justify-between gap-4 mt-6">
+          <div className="pt-5 border-t bg-app-bg text-app-text flex items-center justify-between gap-4 mt-6">
             <button
               type="button"
               disabled={currentStep === 1 || isUploading}
               onClick={prevStep}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 currentStep === 1 || isUploading
-                  ? "text-zinc-700 cursor-not-allowed"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                  ? "text-app-text cursor-not-allowed"
+                  : "text-app-text hover:text-zinc-200 hover:bg-zinc-900"
               }`}
             >
               <ArrowLeft className="h-4 w-4" /> Back

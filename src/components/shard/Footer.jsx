@@ -30,14 +30,14 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#0c0c0b]  text-white border-t border-default-100/10  pt-16 pb-8 px-6 lg:px-16 overflow-hidden">
+    <footer className="relative bg-white dark:bg-[#0c0c0b] text-zinc-900 dark:text-white border-t border-zinc-200 dark:border-default-100/10  pt-16 pb-8 px-6 lg:px-16 overflow-hidden">
       {/* Background Subtle Grid or Glow Effect */}
       <div className="" />
       <div className="absolute bottom-0 right-0 w-100 h-75 bg-purple-600/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative w-full max-w-7xl mx-auto z-10">
         {/* Top Section: Brand & Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-default-200/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-zinc-200 dark:border-default-200/5">
           {/* Brand Info (4 Columns) */}
           <div className="lg:col-span-5 space-y-6 text-left">
             <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ export default function Footer() {
               </Link>
             </div>
 
-            <p className="text-sm leading-relaxed max-w-sm text-white/80">
+            <p className="text-sm leading-relaxed max-w-sm text-zinc-600 dark:text-white/80">
               Preserve and share your life&lsquo;s greatest lessons with a
               global community of learners and educators. Your personal wisdom
               journal, secured forever.
@@ -63,35 +63,35 @@ export default function Footer() {
               <a
                 href="#"
                 aria-label="Twitter"
-                className="p-2.5 rounded-xl bg-[#241F18]/40 border border-default-200/5 text-white/80 hover:text-cyan-400 hover:border-cyan-400/30 transition-all duration-300"
+                className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#241F18]/40 border border-zinc-200 dark:border-default-200/5 text-zinc-600 dark:text-white/80 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-400/30 transition-all duration-300"
               >
                 <FaTwitter size={18} />
               </a>
               <a
                 href="#"
                 aria-label="Instagram"
-                className="p-2.5 rounded-xl bg-[#241F18]/40 border border-default-200/5 text-white/80 hover:text-pink-400 hover:border-pink-400/30 transition-all duration-300"
+                className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#241F18]/40 border border-zinc-200 dark:border-default-200/5 text-zinc-600 dark:text-white/80 hover:text-pink-600 dark:hover:text-pink-400 hover:border-pink-300 dark:hover:border-pink-400/30 transition-all duration-300"
               >
                 <BsInstagram size={18} />
               </a>
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="p-2.5 rounded-xl bg-[#241F18]/40 border border-default-200/5 text-white/80 hover:text-blue-400 hover:border-blue-400/30 transition-all duration-300"
+                className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#241F18]/40 border border-zinc-200 dark:border-default-200/5 text-zinc-600 dark:text-white/80 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-400/30 transition-all duration-300"
               >
                 <LiaLinkedin size={18} />
               </a>
               <a
                 href="#"
                 aria-label="YouTube"
-                className="p-2.5 rounded-xl bg-[#241F18]/40 border border-default-200/5 text-white/80 hover:text-red-400 hover:border-red-400/30 transition-all duration-300"
+                className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#241F18]/40 border border-zinc-200 dark:border-default-200/5 text-zinc-600 dark:text-white/80 hover:text-red-600 dark:hover:text-red-400 hover:border-red-300 dark:hover:border-red-400/30 transition-all duration-300"
               >
                 <BsYoutube size={18} />
               </a>
               <a
                 href="#"
                 aria-label="GitHub"
-                className="p-2.5 rounded-xl bg-[#241F18]/40 border border-default-200/5 text-white/80 hover:text-white hover:border-white/20 transition-all duration-300"
+                className="p-2.5 rounded-xl bg-zinc-100 dark:bg-[#241F18]/40 border border-zinc-200 dark:border-default-200/5 text-zinc-600 dark:text-white/80 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-white/20 transition-all duration-300"
               >
                 <LogoGithub size={18} />
               </a>
@@ -109,7 +109,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Home
                   </a>
@@ -117,7 +117,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Lessons
                   </a>
@@ -125,7 +125,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Blog
                   </a>
@@ -133,7 +133,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Pricing
                   </a>
@@ -150,7 +150,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     About Us
                   </a>
@@ -158,7 +158,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Help & Support
                   </a>
@@ -166,7 +166,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Contact
                   </a>
@@ -174,7 +174,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Careers
                   </a>
@@ -191,7 +191,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Terms of Service
                   </a>
@@ -199,7 +199,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Privacy Policy
                   </a>
@@ -207,7 +207,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Cookie Settings
                   </a>
@@ -215,7 +215,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#F3EAD8] transition-colors"
+                    className="text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-[#F3EAD8] transition-colors"
                   >
                     Sitemap
                   </a>
@@ -226,12 +226,12 @@ export default function Footer() {
         </div>
 
         {/* Middle Section: Integrated Newsletter Form Row */}
-        <div className="py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-default-200/5 text-left">
+        <div className="py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-zinc-200 dark:border-default-200/5 text-left">
           <div className="space-y-1">
-            <h5 className="text-sm font-semibold text-white/90 tracking-wide uppercase border-l-2 border-purple-500 pl-2">
+            <h5 className="text-sm font-semibold text-zinc-900 dark:text-white/90 tracking-wide uppercase border-l-2 border-purple-500 pl-2">
               Subscribe to our newsletter
             </h5>
-            <p className="text-xs text-gray-400 max-w-sm">
+            <p className="text-xs text-zinc-600 dark:text-gray-400 max-w-sm">
               Get weekly trending wisdom and system log updates straight to your
               mailbox.
             </p>
@@ -251,7 +251,7 @@ export default function Footer() {
                   setEmail(e.target.value);
                   if (status) setStatus(null);
                 }}
-                className="w-full  border border-default-200/10 rounded-xl px-4 py-2.5 pl-10 text-sm text-gray-400 placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full  border border-zinc-200 dark:border-default-200/10 rounded-xl px-4 py-2.5 pl-10 text-sm text-zinc-900 dark:text-gray-400 placeholder-zinc-400 dark:placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
               />
               <Mail
                 size={16}
@@ -268,15 +268,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section: Copyright & Regional selectors */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-400">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500 dark:text-gray-400">
           <p>© 2026 Digital Life Lessons, Inc. All rights reserved.</p>
 
           <div className="flex items-center gap-6">
-            <button className="flex items-center gap-1.5 hover:text-white/80 transition-colors cursor-pointer">
+            <button className="flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-white/80 transition-colors cursor-pointer">
               <Globe size={14} />
               <span>English</span>
             </button>
-            <button className="hover:text-white/80 transition-colors cursor-pointer">
+            <button className="hover:text-zinc-900 dark:hover:text-white/80 transition-colors cursor-pointer">
               Worldwide
             </button>
           </div>

@@ -27,11 +27,24 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-white text-zinc-900 dark:bg-[#040712] dark:text-zinc-100" suppressHydrationWarning>
         <Providers>
           <Navbar />
           <main>{children}</main>
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                marginTop: "4rem",
+                borderRadius: "999px",
+                background: "#111214",
+                color: "#f5f5f5",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+              },
+            }}
+          />
         </Providers>
         <Footer />
       </body>

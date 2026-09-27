@@ -66,9 +66,9 @@ export default function UserDashboard(
     .toUpperCase();
 
   return (
-    <div className="w-full min-h-screen bg-slate-50/50 dark:bg-zinc-950 p-4 md:p-8 text-slate-800 dark:text-zinc-100 font-sans transition-colors duration-200">
+    <div className="w-full min-h-screen bg-[#07070d] text-slate-100 p-4 md:p-8 font-sans transition-colors duration-200">
       <div>
-        <h2 className="text-3xl font-semibold ml-8 mt-12">
+        <h2 className="text-3xl font-semibold ml-8 mt-12 text-white">
           Welcome Back, {user?.name}!
         </h2>
         <p className="text-muted ml-8 mt-2">
@@ -89,9 +89,9 @@ export default function UserDashboard(
         {/* Grid 1: Three Main Metric Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Lessons Created */}
-          <div className="relative overflow-hidden rounded-2xl border border-white dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm shadow-slate-100 dark:shadow-none transition-all hover:shadow-md">
-            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-indigo-50/50 dark:bg-indigo-950/20 blur-xl" />
-            <div className="flex h-10 w-10 items-center justify-between rounded-xl bg-indigo-50 dark:bg-indigo-950/40 p-2.5 text-indigo-600 dark:text-indigo-400">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#11131c]/80 backdrop-blur-xl p-6 shadow-[0_30px_60px_rgba(0,0,0,0.35)] transition-all hover:shadow-[0_40px_100px_rgba(79,70,229,0.2)]">
+            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-indigo-500/10 blur-3xl" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-500/10 p-2.5 text-indigo-300">
               <BookOpen className="h-5 w-5" />
             </div>
             <div className="mt-4 space-y-1">
@@ -108,9 +108,9 @@ export default function UserDashboard(
           </div>
 
           {/* Card 2: Wisdom Saved */}
-          <div className="relative overflow-hidden rounded-2xl border border-white dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm shadow-slate-100 dark:shadow-none transition-all hover:shadow-md">
-            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-rose-50/50 dark:bg-rose-950/20 blur-xl" />
-            <div className="flex h-10 w-10 items-center justify-between rounded-xl bg-rose-50 dark:bg-rose-950/40 p-2.5 text-rose-600 dark:text-rose-400">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#11131c]/80 backdrop-blur-xl p-6 shadow-[0_30px_60px_rgba(0,0,0,0.35)] transition-all hover:shadow-[0_40px_100px_rgba(236,72,153,0.18)]">
+            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-rose-500/10 blur-3xl" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-rose-500/10 p-2.5 text-rose-300">
               <Heart className="h-5 w-5" />
             </div>
             <div className="mt-4 space-y-1">
@@ -127,9 +127,9 @@ export default function UserDashboard(
           </div>
 
           {/* Card 3: Total Impact */}
-          <div className="relative overflow-hidden rounded-2xl border border-white dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm shadow-slate-100 dark:shadow-none transition-all hover:shadow-md">
-            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-50/50 dark:bg-amber-950/20 blur-xl" />
-            <div className="flex h-10 w-10 items-center justify-between rounded-xl bg-amber-50 dark:bg-amber-950/40 p-2.5 text-amber-600 dark:text-amber-400">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#11131c]/80 backdrop-blur-xl p-6 shadow-[0_30px_60px_rgba(0,0,0,0.35)] transition-all hover:shadow-[0_40px_100px_rgba(245,158,11,0.18)]">
+            <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-500/10 blur-3xl" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-500/10 p-2.5 text-amber-300">
               <Zap className="h-5 w-5" />
             </div>
             <div className="mt-4 space-y-1">
@@ -174,15 +174,15 @@ export default function UserDashboard(
           </div>
 
           {/* Quick Actions Dark Card Box */}
-          <div className="rounded-2xl bg-linear-to-br from-slate-900 via-zinc-900 to-neutral-950 p-6 text-white shadow-xl dark:shadow-none flex flex-col justify-between gap-6">
+          <div className="rounded-3xl border border-white/10 bg-[#11131c]/85 backdrop-blur-xl p-6 text-zinc-100 shadow-[0_30px_80px_rgba(0,0,0,0.45)] flex flex-col justify-between gap-6">
             <div>
-              <h3 className="font-bold text-lg tracking-tight mb-4 text-zinc-100">
+              <h3 className="font-bold text-lg tracking-tight mb-4 text-white">
                 Quick Actions
               </h3>
               <div className="space-y-3">
                 <Link
                   href="/dashboard/add-lesson"
-                  className="group flex items-center justify-between rounded-xl bg-white/10 p-3.5 text-sm font-semibold text-zinc-200 hover:bg-white/15 hover:text-white transition-all backdrop-blur-md"
+                  className="group flex items-center justify-between rounded-3xl border border-white/10 bg-white/10 p-3.5 text-sm font-semibold text-zinc-200 hover:bg-white/15 hover:text-white transition-all backdrop-blur-xl"
                 >
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-indigo-500/20 p-1.5 text-indigo-400 group-hover:scale-110 transition-transform">
@@ -195,7 +195,7 @@ export default function UserDashboard(
 
                 <Link
                   href="/dashboard/my-lessons"
-                  className="group flex items-center justify-between rounded-xl bg-white/5 p-3.5 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
+                  className="group flex items-center justify-between rounded-3xl border border-white/10 bg-white/5 p-3.5 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
                 >
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-rose-500/20 p-1.5 text-rose-400 group-hover:scale-110 transition-transform">
@@ -208,7 +208,7 @@ export default function UserDashboard(
 
                 <Link
                   href="/dashboard/profile"
-                  className="group flex items-center justify-between rounded-xl bg-white/5 p-3.5 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
+                  className="group flex items-center justify-between rounded-3xl border border-white/10 bg-white/5 p-3.5 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
                 >
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-emerald-500/20 p-1.5 text-emerald-400 group-hover:scale-110 transition-transform">

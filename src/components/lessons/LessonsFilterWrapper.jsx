@@ -61,7 +61,7 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
   return (
     <div className="space-y-8">
       {/* SEARCH AND FILTER BAR */}
-      <div className="flex flex-col md:flex-row gap-3 items-center bg-[#0d101d] p-3 rounded-2xl border border-zinc-900 shadow-xl">
+      <div className="flex flex-col md:flex-row gap-3 items-center  p-3 rounded-2xl border border-zinc-900 shadow-xl">
         
         {/* Search Input */}
         <div className="relative flex-1 w-full">
@@ -73,7 +73,7 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
             placeholder="Search for wisdom..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#131729] text-sm text-zinc-200 pl-14 pr-4 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600/70 transition placeholder:text-zinc-600"
+            className="w-full text-sm bg-app-bg text-app-text pl-14 pr-4 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600/70 transition placeholder:text-zinc-600"
           />
         </div>
 
@@ -83,10 +83,10 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-[#131729] text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-32.5"
+            className="text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-32.5"
           >
             {categories.map((cat) => (
-              <option key={cat} value={cat} className="bg-[#0d101d] text-zinc-300">
+              <option key={cat} value={cat} >
                 {cat === "All" ? "All Categories" : cat}
               </option>
             ))}
@@ -96,10 +96,10 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
           <select
             value={selectedTone}
             onChange={(e) => setSelectedTone(e.target.value)}
-            className="bg-[#131729] text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-30"
+            className=" text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-30"
           >
             {emotionalTones.map((tone) => (
-              <option key={tone} value={tone} className="bg-[#0d101d] text-zinc-300">
+              <option key={tone} value={tone} >
                 {tone === "All" ? "All Tones" : tone}
               </option>
             ))}
@@ -109,10 +109,10 @@ const LessonsFilterWrapper = ({ initialLessons }) => {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-[#131729] text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-25"
+            className=" text-xs font-medium text-zinc-400 px-3 py-3 rounded-xl border border-zinc-800/60 focus:outline-none focus:border-purple-600 cursor-pointer min-w-25"
           >
-            <option value="Newest" className="bg-[#0d101d] text-zinc-300">Newest</option>
-            <option value="Oldest" className="bg-[#0d101d] text-zinc-300">Oldest</option>
+            <option value="Newest" >Newest</option>
+            <option value="Oldest" >Oldest</option>
           </select>
         </div>
       </div>
