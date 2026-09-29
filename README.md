@@ -1,37 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Digital Life Lessons
 
-## Getting Started
+**Live Site →** [digital-life-lessons-client-mu.vercel.app](https://digital-life-lessons-client-mu.vercel.app)
 
-First, run the development server:
+A place to write down the lessons life actually teaches you — the hard ones, the quiet ones, the ones you don’t want to forget.
+
+Most of us learn something important almost every week… and then forget it within a few months. This platform is built to stop that from happening.
+
+---
+
+### What you can do here
+
+- Write your own life lessons (public or private)
+- Mark lessons as Free or Premium
+- Like, save and favorite lessons you find useful
+- Upgrade to Premium (one-time ৳1500) and unlock everything forever
+- Switch between light and dark mode
+- Admins get a full dashboard with reports, user management and analytics
+
+---
+
+### Tech behind it
+
+- **Next.js 16** (App Router)
+- **React 19**
+- **Better Auth** + MongoDB
+- **Stripe** for payments
+- **Tailwind CSS 4** + HeroUI
+- **Framer Motion** for animations
+- **Recharts** for admin charts
+- Dark mode powered by `next-themes`
+
+---
+
+### How to run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
+git clone https://github.com/Ashik2630/DigiLifeLessonClient.git
+cd DigiLifeLessonClient
+npm install
